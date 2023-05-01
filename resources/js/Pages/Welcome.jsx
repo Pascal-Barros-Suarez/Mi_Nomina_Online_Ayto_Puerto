@@ -41,13 +41,15 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         </div>
                     </div>
 
+                    <br/>
+
                     <div className="flex justify-center">
-                        <img src={logoAYTO} alt="AYTO" width="100%" height="100%" />
+                        <img src={logoAYTO} alt="AYTO" width="50%" height="40%" />
                     </div>
 
                     <div className="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
                         <div className="ml-4 text-right text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
-                            Laravel v{laravelVersion} (PHP v{phpVersion})
+                            Laravel v{laravelVersion}, (PHP v{phpVersion})
                         </div>
                     </div>
                 </div>
