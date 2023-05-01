@@ -1,4 +1,5 @@
 import { Link, Head } from '@inertiajs/react';
+import 'bootstrap';
 import logoAYTO from '/public/media/img/logo.png';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {

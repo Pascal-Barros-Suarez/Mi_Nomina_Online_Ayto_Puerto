@@ -11,6 +11,8 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
+        dni: user.dni,
+        department: user.department,
     });
 
     const submit = (e) => {
