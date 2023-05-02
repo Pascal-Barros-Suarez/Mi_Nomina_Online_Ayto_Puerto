@@ -8,10 +8,11 @@ import { Transition } from '@headlessui/react';
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
     const user = usePage().props.auth.user;
 
+
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
-        dni: user.dni,
+        dni: user.DNI,
         department: user.department,
     });
 
@@ -43,6 +44,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         required
                         isFocused
                         autoComplete="name"
+                        name="username"
                     />
 
                     <InputError className="mt-2" message={errors.name} />
@@ -62,6 +64,38 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="dni" value="DNI" />
+
+                    <TextInput
+                        id="dni"
+                        className="mt-1 block w-full"
+                        value={data.dni}
+                        onChange={(e) => setData('dni', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="dni"
+                    />
+
+                    <InputError className="mt-2" message={errors.dni} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="department" value="Department" />
+
+                    <TextInput
+                        id="department"
+                        className="mt-1 block w-full"
+                        value={data.department}
+                        onChange={(e) => setData('department', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="department"
+                    />
+
+                    <InputError className="mt-2" message={errors.department} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (
