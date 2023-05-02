@@ -1,6 +1,13 @@
 ﻿name;DNI;email;password;department
-Pascal;79204859N;Pascal@gmail.com;PaswordAdmin;Informatica
-Juan Pérez;12345678X;juan.perez@example.com;password123;Ventas
-María López;87654321Y;maria.lopez@example.com;password456;Recursos
-David Sánchez;45678901Z;david.sanchez@example.com;password789;Desarrollo
-Ana García;23456789A;ana.garcia@example.com;password321;Marketing
+Pascal;79204859N;Pascalbarrossuarez@gmail.com;passwordAdmin;Informatica
+Juan Pérez;12345678X;juan.perez@gmail.com;password123;Ventas
+María López;87654321Y;maria.lopez@gmail.com;password456;Recursos
+David Sánchez;45678901Z;david.sanchez@gmail.com;password789;Desarrollo
+Ana García;23456789A;ana.garcia@gmail.com;password321;Marketing
+Antonio Romero;67891234B;antonio.romero@hotmail.com;password654;Finanzas
+Sandra Gómez;34567890C;sandra.gomez@yahoo.com;password987;Ventas
+Luis Torres;89012345D;luis.torres@gmail.com;password012;Desarrollo
+Elena Moreno;56789012E;elena.moreno@gmail.com;password345;Recursos
+Mario Jiménez;32109876F;mario.jimenez@yahoo.com;password678;Ventas
+Ana Martín;65432109G;ana.martin@gmail.com;password901;Desarrollo
+Carlos García;23456789H;carlos.garcia@hotmail.com;password234;Marketing

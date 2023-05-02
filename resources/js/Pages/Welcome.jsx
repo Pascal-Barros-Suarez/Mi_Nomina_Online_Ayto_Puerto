@@ -38,7 +38,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                     <div className="flex justify-center mt-16 px-6 sm:items-center">
                         <div className="ml-4 text-center">
-                            <h1 className='display-1'>Nóminas</h1>
+                            <h1 className='font-bigger'>Nóminas</h1>
                         </div>
                     </div>
 

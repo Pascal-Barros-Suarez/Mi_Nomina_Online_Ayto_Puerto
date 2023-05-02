@@ -12,7 +12,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
-        dni: user.DNI,
+        dni: user.dni,
         department: user.department,
     });
 
@@ -93,6 +93,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         required
                         isFocused
                         autoComplete="department"
+                        disabled
                     />
 
                     <InputError className="mt-2" message={errors.department} />
