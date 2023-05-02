@@ -60,7 +60,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
-                        autoComplete="username"
+                        autoComplete="mail"
                     />
 
                     <InputError className="mt-2" message={errors.email} />
@@ -75,7 +75,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         value={data.dni}
                         onChange={(e) => setData('dni', e.target.value)}
                         required
-                        isFocused
                         autoComplete="dni"
                     />
 
@@ -87,11 +86,10 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                     <TextInput
                         id="department"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full disabled text-secondary"
                         value={data.department}
                         onChange={(e) => setData('department', e.target.value)}
                         required
-                        isFocused
                         autoComplete="department"
                         disabled
                     />
