@@ -1,5 +1,7 @@
 import { Link, Head } from '@inertiajs/react';
 import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import logoAYTO from '/public/media/img/logo.png';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
@@ -38,28 +40,35 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                     <div className="flex justify-center mt-16 px-6 sm:items-center">
                         <div className="ml-4 text-center">
-                            <h1 className='font-bigger'>Nóminas</h1>
+                            <h1 className='display-1'>Mi Nómina Online</h1>
                         </div>
                     </div>
 
-                    <br/>
+                    <br />
 
                     <div className="flex justify-center">
                         <img src={logoAYTO} alt="AYTO" width="50%" height="40%" />
                     </div>
 
-                    <div className="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
-                        <div className="ml-4 text-right text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
+                    <div className="flex justify-center mt-16 px-6 sm:items-center sm:justify-center">
+                        {/*<div className="ml-4 text-right text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
                             Laravel v{laravelVersion}, (PHP v{phpVersion})
+                        </div> */}
+                        <div className="ml-4 text-left text-sm text-gray-500 dark:text-gray-400 sm:text-left sm:ml-0">
+                            <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a rel="license" className="link-secondary" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Licencia de Creative Commons" id='commons' src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>Mi Nómina Online</span> by <a xmlns:cc="http://creativecommons.org/ns#" className="link-secondary" href="https://github.com/Pascal-Barros-Suarez" property="cc:attributionName" rel="cc:attributionURL">Pascal Barros Suarez</a> is licensed under a <a rel="license" className="link-secondary" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Reconocimiento-NoComercial-SinObraDerivada 4.0 Internacional License</a>.
                         </div>
                     </div>
                 </div>
             </div>
 
+
             {<style>{`
-                .bg-dots-darker {
-                    background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E");
+                #commons {
+                    border-width:0;
                 }
+                /* .bg-dots-darker {
+                    background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(0,0,0,0.07)'/%3E%3C/svg%3E");
+                } */
                 @media (prefers-color-scheme: dark) {
                     .dark\\:bg-dots-lighter {
                         background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");

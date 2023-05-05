@@ -20,7 +20,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "bootstrap": "^5.0.0",
+        "@coreui/coreui": "^4.2.6",
+        "bootstrap": "^5.2.3",
         "postcss-import": "^14.0.2",
         "postcss-loader": "^4.2.0",
         "react-bootstrap": "^2.7.4",
