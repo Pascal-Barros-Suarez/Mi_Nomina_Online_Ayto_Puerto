@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserCrudController
@@ -42,7 +43,6 @@ class UserCrudController extends CrudController
         CRUD::column('name');
         CRUD::column('dni');
         CRUD::column('email');
-        CRUD::column('password');
         CRUD::column('department');
 
         /**
@@ -62,17 +62,16 @@ class UserCrudController extends CrudController
     {
         CRUD::setValidation(UserRequest::class);
 
-        CRUD::column('name');
-        CRUD::column('dni');
-        CRUD::column('email');
-        CRUD::column('password');
-        CRUD::column('department');
+        CRUD::column('name')->validationRules('required|min:5');
+        CRUD::column('dni')->validationRules('required|min:9');
+        CRUD::column('email')->validationRules('required|email|unique:users,email');
+        CRUD::column('password')->validationRules('required');
+        CRUD::column('department')->validationRules('required');
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+
+        \App\Models\User::creating(function ($entry) {
+            $entry->password = Hash::make($entry->password);
+        });
     }
 
     /**
@@ -83,6 +82,21 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        //$this->setupCreateOperation();
+        CRUD::setValidation(UserRequest::class);
+
+        CRUD::column('name')->validationRules('required|min:5');
+        CRUD::column('dni')->validationRules('required|min:9');
+        CRUD::column('email')->validationRules('required|email|unique:users,email');
+        CRUD::column('password')->validationRules('required');
+        CRUD::column('department')->validationRules('required');
+
+        \App\Models\User::updating(function ($entry) {
+            if (request('password') == null) {
+                $entry->password = $entry->getOriginal('password');
+            } else {
+                $entry->password = Hash::make(request('password'));
+            }
+        });
     }
 }
