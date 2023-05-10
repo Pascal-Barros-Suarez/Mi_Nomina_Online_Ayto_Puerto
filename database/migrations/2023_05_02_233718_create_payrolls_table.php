@@ -13,9 +13,16 @@ return new class extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('path');
+            $table->intenger('sueldo_bruto');
+            $table->intenger('sueldo_base');
+            $table->intenger('irpf');
+            $table->intenger('complementos');
+
+            $table->string('concepto');
+
             $table->timestamps();
+            //$table->string('name');
+            //$table->string('path');
         });
     }
 
