@@ -2,8 +2,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
 import { Document, Page } from 'react-pdf';
 import { Head } from '@inertiajs/react';
+
+//import bootstrap styles
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
+
+// import bootstrap reacr components
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 
 /* function PDFViewer() {
   const [numPages, setNumPages] = useState(null);
@@ -36,7 +43,15 @@ export default function Dashboard({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        {<div className="p-6 text-gray-900 dark:text-gray-100">You're logged in! <br></br>Now You can view your payrolls</div>}
+                        {<div className="p-6 text-gray-900 dark:text-gray-100">
+                            <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nomina</h5>
+                            <br />
+                            <Form>
+                                <div className=' justify-content-center text-center '>
+                                    <Button variant="secondary" type='submit'>Generar Nómina</Button>
+                                </div>
+                            </Form>
+                        </div>}
                     </div>
                 </div>
             </div>
@@ -46,6 +61,6 @@ export default function Dashboard({ auth }) {
                 </div>
 
             </footer>
-        </AuthenticatedLayout>
+        </AuthenticatedLayout >
     );
 }

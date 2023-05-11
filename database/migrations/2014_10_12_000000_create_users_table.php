@@ -14,18 +14,18 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('dni');
+            $table->string('dni')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->intenger('num_seg_social');
+            $table->integer('num_seg_social')->default(0);
             $table->string('department');
             $table->string('cargo');
-            $table->timestamp('F.antiguedad');
+            $table->timestamp('antiguedad')->nullable();
             $table->string('grupo');
-            $table->integer('nivel');
-            $table->integer('cnae_93');
-            $table->integer('grupo_cotizacion');
+            $table->integer('nivel')->default(0);
+            $table->integer('cnae_93')->default(0);
+            $table->integer('grupo_cotizacion')->default(0);
             $table->string('tipo');
             $table->rememberToken();
             $table->timestamps();

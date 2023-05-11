@@ -168,8 +168,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        //Rap2hpoutre\FastExcel\FastExcelServiceProvider::class,
-    ])->toArray(),
+        //Dompdf\ServiceProvider::class,
+        ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------
@@ -185,6 +185,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         //'FastExcel' => Rap2hpoutre\FastExcel\Facades\FastExcel::class,
+        //'PDF' => Dompdf\Facade::class,
 
     ])->toArray(),
 

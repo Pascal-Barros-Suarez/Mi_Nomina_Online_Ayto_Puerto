@@ -13,16 +13,20 @@ return new class extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->intenger('sueldo_bruto');
-            $table->intenger('sueldo_base');
-            $table->intenger('irpf');
-            $table->intenger('complementos');
-
+            $table->unsignedBigInteger('id_usuario');
+            $table->integer('sueldo_bruto');
+            $table->integer('sueldo_base');
+            $table->integer('irpf');
+            $table->integer('complementos');
             $table->string('concepto');
-
             $table->timestamps();
             //$table->string('name');
             //$table->string('path');
+
+            $table->foreign('id_usuario')
+                ->references('id')
+                ->on('users')
+                ->onDelete('Cascade');
         });
     }
 

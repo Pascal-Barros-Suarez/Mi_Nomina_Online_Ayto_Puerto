@@ -40,7 +40,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                     <div className="flex justify-center mt-16 px-6 sm:items-center">
                         <div className="ml-4 text-center">
-                            <h1 className='display-1'>Mi Nómina Online</h1>
+                            <h1 className='text-secondary display-1'>Mi Nómina Online</h1>
                         </div>
                     </div>
 
@@ -51,9 +51,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     </div>
 
                     <div className="flex justify-center mt-16 px-6 sm:items-center sm:justify-center">
-                        {/*<div className="ml-4 text-right text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
-                            Laravel v{laravelVersion}, (PHP v{phpVersion})
-                        </div> */}
                         <div className="ml-4 text-left text-sm text-gray-500 dark:text-gray-400 sm:text-left sm:ml-0">
                             <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a rel="license" className="link-secondary" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Licencia de Creative Commons" id='commons' src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>Mi Nómina Online</span> by <a xmlns:cc="http://creativecommons.org/ns#" className="link-secondary" href="https://github.com/Pascal-Barros-Suarez" property="cc:attributionName" rel="cc:attributionURL">Pascal Barros Suarez</a> is licensed under a <a rel="license" className="link-secondary" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Reconocimiento-NoComercial-SinObraDerivada 4.0 Internacional License</a>.
                         </div>
