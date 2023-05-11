@@ -19,15 +19,15 @@ class PayrollSeeder extends Seeder
         $faker = FakerFactory::create('es_ES');
         $user = User::pluck('id');
 
-        for($i = 0; $i < 100 ; $i++) {
-        payroll::create([
-        'id_usuario'=>$faker->randomElement($user),
-        'sueldo_bruto'=>$faker->random_int(1500,4000),
-        'sueldo_base'=>$faker->random_int(700,3000),
-        'irpf'=>$faker->random_int(19,20),
-        'complementos'=>$faker->random_int(19,20),
-        'concepto'=>$faker->sentence,
-        ]);
+        for ($i = 0; $i < 100; $i++) {
+            payroll::create([
+                'id_usuario' => $faker->randomElement($user),
+                'sueldo_bruto' => $faker->random_int(1500, 4000),
+                'sueldo_base' => $faker->random_int(700, 3000),
+                'irpf' => $faker->random_int(19, 20),
+                'complementos' => $faker->random_int(19, 20),
+                'concepto' => $faker->sentence,
+            ]);
         }
     }
 }

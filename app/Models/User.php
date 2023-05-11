@@ -21,8 +21,18 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'dni',
         'email',
         'password',
+        'num_seg_social',
+        'department',
+        'cargo',
+        'antiguedad',
+        'grupo',
+        'nivel',
+        'cnae_93',
+        'grupo_cotizacion',
+        'tipo',
     ];
 
     /**
@@ -44,7 +54,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function nominas(){
+    public function nominas()
+    {
         return $this->hasMany(Payroll::class);
     }
 }
