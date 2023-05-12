@@ -11,16 +11,16 @@ class payroll extends Model
 
     protected $table = 'payroll';
     protected $fillable = [
-        'id_usuario',
-        'sueldo_bruto',
-        'sueldo_base',
-        'irpf',
-        'complementos',
-        'concepto',
+        'user_id',
+        'gross_salary',
+        'base_salary',
+        'income_tax', //irpf
+        'allowances', //complementos
+        'concept',
     ];
 
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'id_usuario');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

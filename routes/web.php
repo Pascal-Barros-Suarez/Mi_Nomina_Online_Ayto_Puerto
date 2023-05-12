@@ -37,6 +37,10 @@ Route::middleware('auth')->group(function () {
 
 /* Route::get('/adminPanel', function () {
  return Inertia::render('Dashboard');
-}) */
+};) */
+
+Route::get('/generate', function () {
+ return dd('hello');
+});
 
 require __DIR__.'/auth.php';
