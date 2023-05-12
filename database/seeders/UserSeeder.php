@@ -35,7 +35,8 @@ class UserSeeder extends Seeder
         ->chunk(1000)
         ->each(function (LazyCollection $chunk) {
             $records = $chunk->map(function ($row) {
-                $campos = env('CSV_FIELDS');
+                $campos = config('csv.CSV_FIELDS');
+
                 return [
                         $campos[0] => $row[0],
                         $campos[1] =>  $row[1],
