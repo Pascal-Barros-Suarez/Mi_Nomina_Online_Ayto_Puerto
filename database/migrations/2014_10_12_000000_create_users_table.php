@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // $table->bigInteger('social_security_number')->default(0)->unsigned();
-            $table->decimal('social_security_number', 12, 0)->default(0);
+            $table->string('social_security_number')->default('')->nullable();
+            //$table->bigInteger('social_security_number')->default(0)->unsigned();
+            //$table->decimal('social_security_number', 20, 0)->default(0);
             $table->string('department');
             $table->string('position');//cargo
             $table->date('hiring_date')->nullable(); //antiguedad
