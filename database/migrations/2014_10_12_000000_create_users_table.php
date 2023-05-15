@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('social_security_number')->default(0);
+            // $table->bigInteger('social_security_number')->default(0)->unsigned();
+            $table->decimal('social_security_number', 12, 0)->default(0);
             $table->string('department');
             $table->string('position');//cargo
-            $table->timestamp('hiring_date')->nullable(); //auntiguedad
+            $table->date('hiring_date')->nullable(); //antiguedad
             $table->string('group');
             $table->integer('level')->default(0);
             $table->integer('cnae_93')->default(0);
