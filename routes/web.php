@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/generate', [PayrollController::class, 'generatePdf']);
 Route::get('/generate', [PayrollController::class, 'generatePdf']);
-//Route::get('/generate-pdf', [PayrollController::class, 'generatePdf']);
+
+Route::get('/download-pdf', [PayrollController::class, 'downloadPdf']);
 
 require __DIR__ . '/auth.php';

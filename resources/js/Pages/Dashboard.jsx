@@ -77,7 +77,7 @@ export default function Dashboard({ auth }) {
 
               )}
 
-              <a href="/generate-pdf" target="_blank" rel="noopener noreferrer">Generar PDF</a>
+              <a href="/download-pdf" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
             </div>}
           </div>
         </div>
