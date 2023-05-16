@@ -20,8 +20,6 @@ return new class extends Migration
             $table->integer('allowances'); //complementos
             $table->string('concept');
             $table->timestamps();
-            //$table->string('name');
-            //$table->string('path');
 
             $table->foreign('user_id')
                 ->references('id')

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password')->unique();
             $table->bigInteger('social_security_number')->default(0)->unsigned();
             $table->string('department');
-            $table->string('position');//cargo
+            $table->string('position'); //cargo
             $table->date('hiring_date')->nullable(); //antiguedad
             $table->string('group');
             $table->integer('level')->default(0);

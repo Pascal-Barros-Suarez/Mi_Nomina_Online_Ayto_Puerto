@@ -43,10 +43,9 @@ class UserSeeder extends Seeder
                         $campos[2] => $row[2],
                         $campos[3] => Hash::make($row[3]), // Encripta la contraseña
                         $campos[4] => $row[4],
-                        $campos[5] => str_replace([', ', ''], ['.', ''], $row[5]),//remplaza comas y puntos por nada
+                        $campos[5] => str_replace([', ', ''], ['.', ''], $row[5]), //remplaza comas y puntos por nada
                         $campos[6] => $row[6],
-                        $campos[7] =>  \DateTime::createFromFormat('d-m-Y', str_replace('/', '-', $row[7]))->format('Y-m-d'),
-                        //dice que el formato es 'd-m-y' ademas que al recoger el campo el excel cambia '/' por '-'
+                        $campos[7] =>  \DateTime::createFromFormat('d-m-Y', str_replace('/', '-', $row[7]))->format('Y-m-d'), //dice que el formato es 'd-m-y' ademas que al recoger el campo el excel cambia '/' por '-'
                         $campos[8] => $row[8],
                         $campos[9] => $row[9],
                         $campos[10] => $row[10],

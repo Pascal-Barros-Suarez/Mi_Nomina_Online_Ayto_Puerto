@@ -1,5 +1,8 @@
 import React from 'react';
 import { Document, Page } from 'react-pdf';
+import pdfjs from 'pdfjs-dist/build/pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = publicPath + '/build/pdf.worker.js';
 
 const PdfViewer = (props) => {
   return (

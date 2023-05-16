@@ -169,7 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         //Dompdf\ServiceProvider::class,
-        ])->toArray(),
+    ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------

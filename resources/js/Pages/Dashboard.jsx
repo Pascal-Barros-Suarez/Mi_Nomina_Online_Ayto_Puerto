@@ -75,11 +75,6 @@ export default function Dashboard({ auth }) {
               {pdfData && (
                 <div>
                   <PdfViewer pdfData={pdfData} ></PdfViewer>
-{/*                   <Document
-                    file={pdfData}
-                  >
-                    <Page pageNumber={1} />
-                  </Document> */}
                 </div>
 
               )}
