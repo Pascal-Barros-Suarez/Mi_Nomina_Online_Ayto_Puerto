@@ -1,22 +1,55 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Document, Page } from 'react-pdf';
 import { Head } from '@inertiajs/react';
+import PdfViewer from '../Components/pdf';
 
 //import bootstrap styles
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
 
-// import bootstrap reacr components
+// import bootstrap react components
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Inertia } from '@inertiajs/inertia';
 
 export default function Dashboard({ auth }) {
+  const [pdfData, setPdfData] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    Inertia.post('/generate');
+
+
+    fetchPdf();
+
+    /*     Inertia.post('/generate').catch((error) => {
+      console.error(error);
+      // Handle error, if necessary
+    });
+    console.log(response);
+    setPdfData(response.data); */
+
   };
+
+  ///////////////////////////
+  const fetchPdf = async () => {
+    const response = await fetch('/generate');
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    setPdfData(url);
+  };
+  /* useEffect(() => {
+    const fetchPdf = async () => {
+      const response = await fetch('/api/pdf');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+    };
+
+    fetchPdf();
+  }, []); */
+  ///////////////////////////
+
 
   return (
     <AuthenticatedLayout
@@ -36,6 +69,15 @@ export default function Dashboard({ auth }) {
                   <Button variant="secondary" type='submit'>Generar Nómina</Button>
                 </div>
               </Form>
+              {pdfData && (
+                <div>
+                  <PdfViewer></PdfViewer>
+                  
+                </div>
+
+              )}
+
+              <a href="/generate-pdf" target="_blank" rel="noopener noreferrer">Generar PDF</a>
             </div>}
           </div>
         </div>

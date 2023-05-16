@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Dompdf\Dompdf;
+use Illuminate\Http\Response;
+
 
 class PayrollController extends Controller
 {
@@ -12,6 +14,21 @@ class PayrollController extends Controller
         $dompdf->loadHtml('<h1>Hello, World!</h1>');
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $dompdf->stream('document.pdf');
+        $pdfContent = $dompdf->output();
+
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="document.pdf"'
+        ]);
+    }
+
+    public function downloadPdf()
+    {
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml('<h1>Hello, World!</h1>');
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream('Nómina.pdf'); //metodo stream permite descargarlo
+
     }
 }

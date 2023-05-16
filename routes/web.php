@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PayrollController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +41,8 @@ Route::middleware('auth')->group(function () {
  return Inertia::render('Dashboard');
 };) */
 
-Route::get('/generate', function () {
- return dd('hello');
-});
+Route::post('/generate', [PayrollController::class, 'generatePdf']);
+Route::get('/generate', [PayrollController::class, 'generatePdf']);
+//Route::get('/generate-pdf', [PayrollController::class, 'generatePdf']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
