@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('dni')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->hash('password');
+            $table->string('password')->unique();
             $table->bigInteger('social_security_number')->default(0)->unsigned();
             $table->string('department');
             $table->string('position');//cargo

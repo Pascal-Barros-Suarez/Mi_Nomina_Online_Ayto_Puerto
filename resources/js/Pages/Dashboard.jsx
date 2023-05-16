@@ -62,22 +62,28 @@ export default function Dashboard({ auth }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             {<div className="p-6 text-gray-900 dark:text-gray-100">
-              <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nomina</h5>
+              <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
               <br />
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>
                   <Button variant="secondary" type='submit'>Generar Nómina</Button>
+                  <br />
+                  <a href="/download-pdf" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
                 </div>
               </Form>
+              <br />
               {pdfData && (
                 <div>
-                  <PdfViewer></PdfViewer>
-                  
+                  <PdfViewer pdfData={pdfData} ></PdfViewer>
+{/*                   <Document
+                    file={pdfData}
+                  >
+                    <Page pageNumber={1} />
+                  </Document> */}
                 </div>
 
               )}
 
-              <a href="/download-pdf" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
             </div>}
           </div>
         </div>

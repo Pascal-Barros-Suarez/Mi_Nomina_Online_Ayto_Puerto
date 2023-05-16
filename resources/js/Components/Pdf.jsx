@@ -1,13 +1,11 @@
 import React from 'react';
 import { Document, Page } from 'react-pdf';
 
-const PdfViewer = () => {
+const PdfViewer = (props) => {
   return (
     <div>
       <h1>PDF Viewer</h1>
-      <Document
-        file={pdfData}
-      >
+      <Document file={props.pdfData}>
         <Page pageNumber={1} />
       </Document>
     </div>

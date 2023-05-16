@@ -22,10 +22,10 @@ class PayrollSeeder extends Seeder
         for ($i = 0; $i < 100; $i++) {
             payroll::create([
                 'user_id' => $faker->randomElement($user),
-                'gross_salary' => $faker->random_int(1500, 4000),
-                'base_salary' => $faker->random_int(700, 3000),
-                'income_tax' => $faker->random_int(19, 20),
-                'allowances' => $faker->random_int(19, 20),
+                'gross_salary' => $faker->numberBetween(1500, 4000),
+                'base_salary' => $faker->numberBetween(700, 3000),
+                'income_tax' => $faker->numberBetween(19, 20),
+                'allowances' => $faker->numberBetween(19, 20),
                 'concept' => $faker->sentence,
             ]);
         }
