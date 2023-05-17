@@ -1,7 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
 import { dibujaFlash } from '../Components/FlashMessage';
+import { dibujaFlash } from '../Components/FlashMessage';
 import { Head } from '@inertiajs/react';
+import PdfViewer from '../Components/Pdf';
+import Modal from '../Components/Modal';
 import PdfViewer from '../Components/Pdf';
 import Modal from '../Components/Modal';
 
@@ -17,11 +20,13 @@ import { Inertia } from '@inertiajs/inertia';
 export default function Dashboard({ auth }) {
   const [pdfData, setPdfData] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   //controla si se ha enviado el formulario de generación de nomina
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchPdf();
+    openModal();
     openModal();
   };
 
@@ -33,6 +38,15 @@ export default function Dashboard({ auth }) {
     setPdfData(url);
   };
 
+  //abrir el modal donde se vera la nomina
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  //cerrar el modal donde se vera la nomina
+  const closeModal = () => {
+    setShowModal(false);
+  };
   //abrir el modal donde se vera la nomina
   const openModal = () => {
     setShowModal(true);
@@ -63,6 +77,8 @@ export default function Dashboard({ auth }) {
                 </div>
               </Form>
               <br />
+
+              {/* modal */}
 
               {/* modal */}
               {pdfData && (

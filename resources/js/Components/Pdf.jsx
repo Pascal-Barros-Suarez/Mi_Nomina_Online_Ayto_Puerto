@@ -1,4 +1,5 @@
 import React from 'react';
+import { dibujaFlash } from '../Components/FlashMessage';
 
 
 const PdfViewer = (props) => {
