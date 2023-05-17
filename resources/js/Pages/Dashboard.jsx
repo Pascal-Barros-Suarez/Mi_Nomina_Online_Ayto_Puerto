@@ -55,17 +55,18 @@ export default function Dashboard({ auth }) {
             {<div className="p-6 text-gray-900 dark:text-gray-100">
               <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
               <br />
+              {console.log('dibujaFlash', dibujaFlash())}
+              {dibujaFlash()}
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>
                   <Button variant="secondary" type='submit'>Generar Ultima Nómina</Button>
-                  {console.log('dibujaFlash', dibujaFlash())}
                 </div>
               </Form>
               <br />
 
               {/* modal */}
               {pdfData && (
-                <Modal className='p-5' show={showModal} onClose={closeModal} >
+                <Modal className='p-5 mw-100' show={showModal} onClose={closeModal} >
                   <div className='m-3 row'>
                     <h1 className='col-10 text-center'>Visor de Nóminas</h1>
                     <Button aria-label="Hide" className='col m-2 display-3' onClick={closeModal} variant="outline-danger">X</Button>

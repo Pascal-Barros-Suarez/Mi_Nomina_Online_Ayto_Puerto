@@ -29,7 +29,20 @@ class PayrollController extends Controller
         $options = $dompdf->getOptions();
 
         $dompdf->setOptions($options);
-        $dompdf->loadHtml('<h1>Hello, World!</h1><p>This is your payroll</p>');
+        $dompdf->loadHtml('<h1>Hello, World!</h1>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        <p>This is your payroll</p>
+        ');
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $pdfContent = $dompdf->output();
