@@ -1,8 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
-import { Document, Page } from 'react-pdf';
+import { dibujaFlash } from '../Components/FlashMessage';
 import { Head } from '@inertiajs/react';
-import PdfViewer from '../Components/pdf';
+import PdfViewer from '../Components/Pdf';
+import Modal from '../Components/Modal';
 
 //import bootstrap styles
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,11 +16,13 @@ import { Inertia } from '@inertiajs/inertia';
 
 export default function Dashboard({ auth }) {
   const [pdfData, setPdfData] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   //controla si se ha enviado el formulario de generación de nomina
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchPdf();
+    openModal();
   };
 
   //consulta la nomina con fech
@@ -30,6 +33,15 @@ export default function Dashboard({ auth }) {
     setPdfData(url);
   };
 
+  //abrir el modal donde se vera la nomina
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  //cerrar el modal donde se vera la nomina
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <AuthenticatedLayout
@@ -37,7 +49,6 @@ export default function Dashboard({ auth }) {
       header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
     >
       <Head title="Dashboard" />
-
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -47,14 +58,20 @@ export default function Dashboard({ auth }) {
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>
                   <Button variant="secondary" type='submit'>Generar Ultima Nómina</Button>
-
+                  {console.log('dibujaFlash', dibujaFlash())}
                 </div>
               </Form>
               <br />
+
+              {/* modal */}
               {pdfData && (
-
-                <PdfViewer pdfData={pdfData} ></PdfViewer>
-
+                <Modal className='p-5' show={showModal} onClose={closeModal} >
+                  <div className='m-3 row'>
+                    <h1 className='col-10 text-center'>Visor de Nóminas</h1>
+                    <Button aria-label="Hide" className='col m-2 display-3' onClick={closeModal} variant="outline-danger">X</Button>
+                  </div>
+                  <PdfViewer pdfData={pdfData} ></PdfViewer>
+                </Modal>
               )}
 
             </div>}
