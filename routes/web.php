@@ -41,9 +41,7 @@ Route::middleware('auth')->group(function () {
  return Inertia::render('Dashboard');
 };) */
 
-Route::post('/generate', [PayrollController::class, 'generatePdf']);
 Route::get('/generate', [PayrollController::class, 'generatePdf']);
 
-Route::get('/download-pdf', [PayrollController::class, 'downloadPdf']);
 
 require __DIR__ . '/auth.php';

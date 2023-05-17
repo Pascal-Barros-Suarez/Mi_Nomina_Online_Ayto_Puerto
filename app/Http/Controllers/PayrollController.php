@@ -21,14 +21,4 @@ class PayrollController extends Controller
             'Content-Disposition' => 'inline; filename="document.pdf"'
         ]);
     }
-
-    public function downloadPdf()
-    {
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml('<h1>Hello, World!</h1><p>This is your payroll</p>');
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $dompdf->stream('Nómina.pdf'); //metodo stream permite descargarlo
-
-    }
 }

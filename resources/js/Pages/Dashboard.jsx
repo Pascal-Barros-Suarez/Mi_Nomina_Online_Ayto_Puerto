@@ -16,39 +16,19 @@ import { Inertia } from '@inertiajs/inertia';
 export default function Dashboard({ auth }) {
   const [pdfData, setPdfData] = useState(null);
 
+  //controla si se ha enviado el formulario de generación de nomina
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
     fetchPdf();
-
-    /*     Inertia.post('/generate').catch((error) => {
-      console.error(error);
-      // Handle error, if necessary
-    });
-    console.log(response);
-    setPdfData(response.data); */
-
   };
 
-  ///////////////////////////
+  //consulta la nomina con fech
   const fetchPdf = async () => {
     const response = await fetch('/generate');
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     setPdfData(url);
   };
-  /* useEffect(() => {
-    const fetchPdf = async () => {
-      const response = await fetch('/api/pdf');
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setPdfUrl(url);
-    };
-
-    fetchPdf();
-  }, []); */
-  ///////////////////////////
 
 
   return (
@@ -66,16 +46,14 @@ export default function Dashboard({ auth }) {
               <br />
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>
-                  <Button variant="secondary" type='submit'>Generar Nómina</Button>
-                  <br />
-                  <a href="/download-pdf" target="_blank" rel="noopener noreferrer">Descargar PDF</a>
+                  <Button variant="secondary" type='submit'>Generar Ultima Nómina</Button>
+
                 </div>
               </Form>
               <br />
               {pdfData && (
-                <div>
-                  <PdfViewer pdfData={pdfData} ></PdfViewer>
-                </div>
+
+                <PdfViewer pdfData={pdfData} ></PdfViewer>
 
               )}
 
@@ -92,23 +70,3 @@ export default function Dashboard({ auth }) {
     </AuthenticatedLayout >
   );
 }
-
-/* function PDFViewer() {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
-
-  return (
-    <div>
-      <Document file="ruta/al/archivo.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
-      </Document>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
-    </div>
-  );
-} */
