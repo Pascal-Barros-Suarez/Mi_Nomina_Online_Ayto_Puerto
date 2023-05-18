@@ -39,13 +39,15 @@ class PayrollController extends Controller
             ->get();
 
         //contenido del pdf
-        $bootstrapCSS = file_get_contents('/node_modules/bootstrap/dist/js/bootstrap.min.js');
+        $bootstrapJS = file_get_contents(public_path('css/bootstrap/bootstrap.min.js'));
+        $bootstrapCCS = file_get_contents(public_path('css/bootstrap/bootstrap.min.css'));
         $customCSS = file_get_contents(public_path('css/custom.css'));
         $html = '
         <html>
             <head>
                 <style>
-                    ' . $bootstrapCSS . '
+                '  . $bootstrapJS . '
+                    '  . $bootstrapCCS . '
                     ' . $customCSS . '
                 </style>
             </head>
@@ -55,7 +57,7 @@ class PayrollController extends Controller
             <hr />
         
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 tbc-123">
                     <h2>Datos personales</h2>
                     <div class="form-group">
                         <label for="nombre y apellidos">Nombre:</label>
@@ -239,6 +241,7 @@ class PayrollController extends Controller
         //creaccion del pdf
         $dompdf = new Dompdf();
         $options = $dompdf->getOptions();
+        //$options->setDebugCss(true);
 
         $dompdf->setOptions($options);
         $dompdf->loadHtml($html);

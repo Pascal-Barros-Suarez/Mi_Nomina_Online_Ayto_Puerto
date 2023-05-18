@@ -13,7 +13,7 @@ export function dibujaFlash() {
                 className="d-inline-block m-1 rounded-5"
                 bg='success'
                 key='alert_flash'
-                onClose={() => setShow(false)} show={show} delay={4050} autohide>
+                onClose={() => setShow(false)} show={show} delay={7050} autohide>
                 <div className="d-flex justify-content-between">
                     <Toast.Body>
                         <h5 className="fa fa-flash text-white">{flash.success}</h5>

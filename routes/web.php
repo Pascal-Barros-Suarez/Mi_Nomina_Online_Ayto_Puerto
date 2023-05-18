@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PayrollController;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,8 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//Auth::routes(['verify' => true]);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

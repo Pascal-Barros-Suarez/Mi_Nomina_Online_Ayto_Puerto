@@ -25,7 +25,7 @@ export default function Dashboard({ auth }) {
     fetchPdf();
     openModal();
   };
-  
+
   //consulta la nomina con fech
   const fetchPdf = async () => {
     const response = await fetch('/generate');
@@ -33,31 +33,32 @@ export default function Dashboard({ auth }) {
     const url = URL.createObjectURL(blob);
     setPdfData(url);
   };
-  
+
   //abrir el modal donde se vera la nomina
   const openModal = () => {
     setShowModal(true);
   };
-  
+
   //cerrar el modal donde se vera la nomina
   const closeModal = () => {
     setShowModal(false);
+
   };
-  
+
   return (
     <AuthenticatedLayout
-    user={auth.user}
-    header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+      user={auth.user}
+      header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
     >
       <Head title="Dashboard" />
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             {<div className="p-6 text-gray-900 dark:text-gray-100">
-              {console.log('dibujaFlash', dibujaFlash())}
-              {dibujaFlash()}
               <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
               <br />
+              {console.log('dibujaFlash', dibujaFlash())}
+              {dibujaFlash()}
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>
                   <Button variant="secondary" type='submit'>Generar Ultima Nómina</Button>
@@ -68,6 +69,7 @@ export default function Dashboard({ auth }) {
               {/* modal */}
               {pdfData && (
                 <Modal className='p-5 mw-100' show={showModal} onClose={closeModal} >
+
                   <div className='m-3 row'>
                     <h1 className='col-10 text-center'>Visor de Nóminas</h1>
                     <Button aria-label="Hide" className='col m-2 display-3' onClick={closeModal} variant="outline-danger">X</Button>
