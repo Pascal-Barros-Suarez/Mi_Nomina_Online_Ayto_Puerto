@@ -1,5 +1,7 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.js';
 
 export default function Modal({ children, show = false, maxWidth = '2xl', closeable = true, onClose = () => { } }) {
     const close = () => {

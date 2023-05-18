@@ -1,6 +1,6 @@
 import React from 'react';
-import { dibujaFlash } from '../Components/FlashMessage';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.js';
 
 const PdfViewer = (props) => {
   return (

@@ -1,12 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
 import { dibujaFlash } from '../Components/FlashMessage';
-import { dibujaFlash } from '../Components/FlashMessage';
 import { Head } from '@inertiajs/react';
 import PdfViewer from '../Components/Pdf';
 import Modal from '../Components/Modal';
-import PdfViewer from '../Components/Pdf';
-import Modal from '../Components/Modal';
+
 
 //import bootstrap styles
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,16 +18,14 @@ import { Inertia } from '@inertiajs/inertia';
 export default function Dashboard({ auth }) {
   const [pdfData, setPdfData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   //controla si se ha enviado el formulario de generación de nomina
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchPdf();
     openModal();
-    openModal();
   };
-
+  
   //consulta la nomina con fech
   const fetchPdf = async () => {
     const response = await fetch('/generate');
@@ -37,48 +33,37 @@ export default function Dashboard({ auth }) {
     const url = URL.createObjectURL(blob);
     setPdfData(url);
   };
-
+  
   //abrir el modal donde se vera la nomina
   const openModal = () => {
     setShowModal(true);
   };
-
+  
   //cerrar el modal donde se vera la nomina
   const closeModal = () => {
     setShowModal(false);
   };
-  //abrir el modal donde se vera la nomina
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  //cerrar el modal donde se vera la nomina
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
+  
   return (
     <AuthenticatedLayout
-      user={auth.user}
-      header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+    user={auth.user}
+    header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
     >
       <Head title="Dashboard" />
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             {<div className="p-6 text-gray-900 dark:text-gray-100">
-              <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
-              <br />
               {console.log('dibujaFlash', dibujaFlash())}
               {dibujaFlash()}
+              <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
+              <br />
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>
                   <Button variant="secondary" type='submit'>Generar Ultima Nómina</Button>
                 </div>
               </Form>
               <br />
-
-              {/* modal */}
 
               {/* modal */}
               {pdfData && (
