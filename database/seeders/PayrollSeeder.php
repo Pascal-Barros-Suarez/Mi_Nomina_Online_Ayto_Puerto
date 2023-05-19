@@ -19,7 +19,11 @@ class PayrollSeeder extends Seeder
         $faker = FakerFactory::create('es_ES');
         $user = User::pluck('id');
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 200; $i++) {
+            $date = $faker->dateTimeBetween('-3 years', 'now');
+            $month = $date->format('m');
+            $year = $date->format('Y');
+
             payroll::create([
                 'user_id' => $faker->randomElement($user),
                 'gross_salary' => $faker->numberBetween(1500, 4000),
@@ -27,6 +31,9 @@ class PayrollSeeder extends Seeder
                 'income_tax' => $faker->numberBetween(19, 20),
                 'allowances' => $faker->numberBetween(19, 20),
                 'concept' => $faker->sentence,
+                'month' => $month,
+                'year' => $year,
+
             ]);
         }
     }
