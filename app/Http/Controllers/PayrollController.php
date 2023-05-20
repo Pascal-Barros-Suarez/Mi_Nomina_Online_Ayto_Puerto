@@ -17,7 +17,17 @@ use Illuminate\Support\Facades\Auth;
 
 class PayrollController extends Controller
 {
-  public function UserPayrolls()
+  public function userPayrolls()
+  {
+    $payrolls = User::where('id', Auth::id())
+      ->with('payroll')
+      ->latest()
+      ->get();
+
+    return dd($payrolls);
+  }
+
+  public function lastPayrolls()
   {
     $payrolls = User::where('id', Auth::id())
       ->with('payroll')
@@ -32,15 +42,13 @@ class PayrollController extends Controller
   public function generatePdf()
   {
     //datos para el pdf
-    
-    //$user = Auth::user();
     $payroll = User::where('id', Auth::id())
-    ->with('payroll')
-    ->latest()
-    ->get();
-    
+      ->with('payroll')
+      ->latest()
+      ->get();
+
     require_once('/app/templates/pdf-template.php'); // Importa el archivo pdf-template.php
-    
+
     //creaccion del pdf
     $dompdf = new Dompdf();
     $options = $dompdf->getOptions();
@@ -49,14 +57,21 @@ class PayrollController extends Controller
     $dompdf->setOptions($options);
     $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
     $dompdf->setPaper('A4', 'portrait');
+    $dompdf->
     $dompdf->render();
     $pdfContent = $dompdf->output();
 
     Session::flash('success', 'Generating PDF!');
 
-    return new Response($pdfContent, 200, [
+    /* return new Response($pdfContent, 200, [
       'Content-Type' => 'application/pdf',
       'Content-Disposition' => 'inline; filename="Nómina.pdf"'
+    ]); */
+
+    // Retornar la respuesta a Inertia con el PDF en base64
+    return Inertia::render('Payroll', [
+      'pdfContent' => $pdfContent,
+      'filename' => 'Nomina.pdf'
     ]);
   }
 }

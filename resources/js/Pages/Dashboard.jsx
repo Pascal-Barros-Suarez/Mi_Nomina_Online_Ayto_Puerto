@@ -29,7 +29,7 @@ export default function Dashboard({ auth }) {
 
   //consulta la nomina con fech
   const fetchPdf = async () => {
-    const response = await fetch('/generate');
+    const response = await fetch('/generate-pdf');
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     setPdfData(url);
