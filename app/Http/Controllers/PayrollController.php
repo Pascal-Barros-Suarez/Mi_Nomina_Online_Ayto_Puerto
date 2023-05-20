@@ -29,12 +29,12 @@ class PayrollController extends Controller
 
   public function lastPayrolls()
   {
-    $payrolls = User::where('id', Auth::id())
-      ->with('payroll')
-      ->latest()
-      ->get();
+    $payroll = User::where('id', Auth::id())
+    ->with('payroll')
+    ->latest()
+    ->get();
 
-    return dd($payrolls);
+    return $payroll;
   }
 
 
