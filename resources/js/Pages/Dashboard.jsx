@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
 import { dibujaFlash } from '../Components/FlashMessage';
+import UltimaNomina from '../Components/TablaUltimaNomina.jsx';
 import { Head } from '@inertiajs/react';
 import PdfViewer from '../Components/Pdf';
 import Modal from '../Components/Modal';
@@ -57,6 +58,7 @@ export default function Dashboard({ auth }) {
             {<div className="p-6 text-gray-900 dark:text-gray-100">
               <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
               <br />
+              <UltimaNomina></UltimaNomina>
               {console.log('dibujaFlash', dibujaFlash())}
               {dibujaFlash()}
               <Form onSubmit={handleSubmit}>

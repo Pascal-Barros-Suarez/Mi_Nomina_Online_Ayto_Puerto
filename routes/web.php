@@ -19,16 +19,14 @@ use Inertia\Inertia;
 |
 */
 
-//Auth::routes(['verify' => true]);
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        //'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
@@ -41,10 +39,11 @@ Route::middleware('auth')->group(function () {
 });
 
 //payrolls
-Route::get('/generate', [PayrollController::class, 'generatePdf']);
-Route::get('/payrolls', [PayrollController::class, 'allPayrolls']);
-Route::get('/userPayrolls', [PayrollController::class, 'UserPayrolls']);
-
+Route::middleware(['auth', 'verified'])->group(function () {
+Route::get('/generate', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
+Route::get('/payrolls', [PayrollController::class, 'allPayrolls'])->name('nomina.todas');
+Route::get('/userPayrolls', [PayrollController::class, 'UserPayrolls'])->name('nominas.user');
+});
 
 
 
