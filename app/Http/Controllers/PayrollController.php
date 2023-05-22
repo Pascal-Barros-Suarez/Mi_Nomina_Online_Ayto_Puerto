@@ -25,20 +25,18 @@ class PayrollController extends Controller
 
   public function lastPayroll()
   {
-    // Obtener el usuario autenticado actualmente
     $lastPayroll = User::where('id', Auth::id())
-      ->with(['payroll' => function ($query) {
-        $query->orderBy('year', 'desc') // Ordenar las nóminas por año de forma descendente
-          ->orderBy('month', 'desc'); // Luego ordenar las nóminas por mes de forma descendente
-      }])
-      ->firstOrFail() // Obtener el usuario o lanzar una excepción si no se encuentra
-      ->payroll //accedemos a la variable
-      ->first(); // Obtener la última nómina del usuario autenticado
+        ->with(['payroll' => function ($query) { //dentro de nominas ordenar por:
+            $query->orderBy('year', 'desc') // Ordenar las nóminas por año de forma descendente
+                ->orderBy('month', 'desc'); // Luego ordenar las nóminas por mes de forma descendente
+        }])
+        ->firstOrFail() //Obtener el usuario o lanzar una excepción si no se encuentra
+        ->payroll //accedemos a la variable
+        ->first();//recoger solo la ultima nomina
+        $array = $lastPayroll->getAttributes();
 
-    // Devolver la última nómina
-    return Inertia::render('Dashboard', [
-      'lastPayroll' => $lastPayroll, // Pasar la variable a la plantilla de Inertia
-    ]);
+    return Inertia::render('Dashboard',  ['payroll' => $array]);
+
   }
 
 

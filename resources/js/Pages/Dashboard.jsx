@@ -1,8 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
 import { dibujaFlash } from '../Components/FlashMessage';
-import { Inertia } from '@inertiajs/inertia';
-import { Head } from '@inertiajs/react';
+//import { Inertia } from '@inertiajs/inertia';
+import { Head, usePage } from '@inertiajs/react';
 import UltimaNomina from '../Components/TablaUltimaNomina.jsx';
 import PdfViewer from '../Components/Pdf';
 import Modal from '../Components/Modal';
@@ -16,13 +16,17 @@ import 'bootstrap/dist/js/bootstrap.js';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-export default function Dashboard({ auth, lastPayroll }) {
-  const mostrarMensajesLog = true;
+export default function Dashboard() {
+  const { auth, payroll } = usePage().props;
+  const mostrarMensajesLog = false;
   const [pdfData, setPdfData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  console.log(Inertia);
 
-  //
+  if (mostrarMensajesLog) {//mensajes de prueba
+    console.log('nomina -', payroll);
+    console.log('auth -', auth);
+  }
+
   //controla si se ha enviado el formulario de generación de nomina
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,13 +34,6 @@ export default function Dashboard({ auth, lastPayroll }) {
     openModal();
   };
 
-  //recupera lso datos para la tabla
-  const consultaNomina = async () => {
-    await fetch('/userLastPayroll');
-    if (mostrarMensajesLog) {
-      console.log('ultima nomina para la tabla', lastPayroll)
-    }
-  }
 
   //consulta la nomina con fech
   const fetchPdf = async () => {
@@ -54,13 +51,7 @@ export default function Dashboard({ auth, lastPayroll }) {
   //cerrar el modal donde se vera la nomina
   const closeModal = () => {
     setShowModal(false);
-
   };
-
-
-  //lanzamiento de la consulta
-  consultaNomina();
-
 
   return (
     <AuthenticatedLayout
@@ -73,13 +64,13 @@ export default function Dashboard({ auth, lastPayroll }) {
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             {<div className="p-6 text-gray-900 dark:text-gray-100">
               {/* mensaje flash */}
-              {console.log('dibujaFlash', dibujaFlash())}
+              {mostrarMensajesLog && console.log('dibuja flash -', dibujaFlash())}
               {dibujaFlash()}
 
               <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
               <br />
               {/* tabla de datos de la ultima nomina */}
-              <UltimaNomina nomina={lastPayroll}></UltimaNomina>
+              <UltimaNomina nomina={payroll}></UltimaNomina>
 
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>

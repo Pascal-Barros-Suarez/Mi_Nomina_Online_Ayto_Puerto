@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PayrollController;
@@ -19,9 +21,24 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+/* Route::get('/dashboard', function () {
+    $lastPayroll = User::where('id', Auth::id())
+        ->with(['payroll' => function ($query) {
+            $query->orderBy('year', 'desc') // Ordenar las nóminas por año de forma descendente
+                ->orderBy('month', 'desc'); // Luego ordenar las nóminas por mes de forma descendente
+        }])
+        ->firstOrFail() //Obtener el usuario o lanzar una excepción si no se encuentra
+        ->payroll //accedemos a la variable
+        ->first();
+        $array = $lastPayroll->getAttributes();
+
+    return Inertia::render('Dashboard',  ['payroll' => $array]);
+})->middleware(['auth', 'verified'])->name('dashboard'); */
+
+Route::get('/dashboard', [PayrollController::class, 'lastPayroll'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -39,11 +56,11 @@ Route::middleware('auth')->group(function () {
 });
 
 //payrolls
-//Route::middleware('auth')->group(function () {
-Route::get('/generate-pdf', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
-Route::get('/userPayrolls', [PayrollController::class, 'userPayrolls'])->name('nomina.user.todas');
-Route::get('/userLastPayroll', [PayrollController::class, 'lastPayroll'])->name('nominas.user.ultima');
-//});
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/generate-pdf', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
+    Route::get('/userPayrolls', [PayrollController::class, 'userPayrolls'])->name('nomina.user.todas');
+    Route::get('/userLastPayroll', [PayrollController::class, 'lastPayroll']);
+});
 
 
 
