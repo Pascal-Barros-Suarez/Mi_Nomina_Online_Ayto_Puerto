@@ -18,10 +18,10 @@ const UltimaNomina = ({ nomina }) => {
           <tr>
             {/* <td>{nomina[0].mes}, del {nomina.año}</td> */}
             <td>{nomina}</td>
-            <td>{nomina}</td>
-            <td>{nomina}</td>
-            <td>{nomina}</td>
-            <td>{nomina}</td>
+            <td>{'1'}</td>
+            <td>{'1'}</td>
+            <td>{'1'}</td>
+            <td>{'1'}</td>
             {/* <td>{nomina.salarioBase}</td>
             <td>{nomina.salarioBruto}</td>
             <td>{nomina.irpf}</td>

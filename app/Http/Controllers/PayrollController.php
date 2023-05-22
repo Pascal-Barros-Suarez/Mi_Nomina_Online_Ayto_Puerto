@@ -23,7 +23,6 @@ class PayrollController extends Controller
     dd($payrolls);
   }
 
-
   public function lastPayroll()
   {
     // Obtener el usuario autenticado actualmente
@@ -36,9 +35,8 @@ class PayrollController extends Controller
       ->payroll //accedemos a la variable
       ->first(); // Obtener la última nómina del usuario autenticado
 
-    //return $lastPayroll; 
     // Devolver la última nómina
-    return Inertia::render('Nomina', [
+    return Inertia::render('Dashboard', [
       'lastPayroll' => $lastPayroll, // Pasar la variable a la plantilla de Inertia
     ]);
   }
@@ -137,15 +135,15 @@ class PayrollController extends Controller
                     <tbody>
                       <tr>
                         <td><strong>Nombre de la empresa:</strong></td>
-                        <td>Empresa XYZ</td>
+                        <td>AYUNTAMIENTO DE PUERTO DEL ROSARIO</td>
                       </tr>
                       <tr>
                         <td><strong>Domicilio:</strong></td>
-                        <td>Calle Principal 123</td>
+                        <td>CL FERNANDEZ CASTAÑEIRA 2 35600 PUERTO DEL ROSARIO (LAS PALMAS)</td>
                       </tr>
                       <tr>
                         <td><strong>CIF:</strong></td>
-                        <td>ABC123456789</td>
+                        <td>P3501800A</td>
                       </tr>
                       <tr>
                         <td><strong>Cuenta de cotización:</strong></td>

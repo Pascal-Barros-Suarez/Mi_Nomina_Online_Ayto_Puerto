@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
 import { dibujaFlash } from '../Components/FlashMessage';
 import { Inertia } from '@inertiajs/inertia';
-import { Head, usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import UltimaNomina from '../Components/TablaUltimaNomina.jsx';
 import PdfViewer from '../Components/Pdf';
 import Modal from '../Components/Modal';
@@ -16,11 +16,11 @@ import 'bootstrap/dist/js/bootstrap.js';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, lastPayroll }) {
   const mostrarMensajesLog = true;
   const [pdfData, setPdfData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  let ultimaNominaUser;
+  console.log(Inertia);
 
   //
   //controla si se ha enviado el formulario de generación de nomina
@@ -34,7 +34,7 @@ export default function Dashboard({ auth }) {
   const consultaNomina = async () => {
     await fetch('/userLastPayroll');
     if (mostrarMensajesLog) {
-      console.log('ultima nomina para la tabla', usePage().props)
+      console.log('ultima nomina para la tabla', lastPayroll)
     }
   }
 
@@ -79,7 +79,7 @@ export default function Dashboard({ auth }) {
               <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
               <br />
               {/* tabla de datos de la ultima nomina */}
-              <UltimaNomina nomina={ultimaNominaUser}></UltimaNomina>
+              <UltimaNomina nomina={lastPayroll}></UltimaNomina>
 
               <Form onSubmit={handleSubmit}>
                 <div className=' justify-content-center text-center '>
