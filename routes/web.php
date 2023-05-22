@@ -39,11 +39,11 @@ Route::middleware('auth')->group(function () {
 });
 
 //payrolls
-Route::middleware(['auth', 'verified'])->group(function () {
+//Route::middleware('auth')->group(function () {
 Route::get('/generate-pdf', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
-Route::get('/payrolls', [PayrollController::class, 'allPayrolls'])->name('nomina.todas');
-Route::get('/userPayrolls', [PayrollController::class, 'UserPayrolls'])->name('nominas.user');
-});
+Route::get('/userPayrolls', [PayrollController::class, 'userPayrolls'])->name('nomina.user.todas');
+Route::get('/userLastPayroll', [PayrollController::class, 'lastPayroll'])->name('nominas.user.ultima');
+//});
 
 
 

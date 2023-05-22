@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('income_tax'); //irpf
             $table->integer('allowances'); //complementos
             $table->string('concept');
-            $table->string('month'); // campo mes
+            $table->integer('month'); // campo mes
             $table->integer('year'); // campo año
 
             $table->timestamps();

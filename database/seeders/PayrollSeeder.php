@@ -20,7 +20,7 @@ class PayrollSeeder extends Seeder
         $user = User::pluck('id');
 
         for ($i = 0; $i < 200; $i++) {
-            $date = $faker->dateTimeBetween('-3 years', 'now');
+            $date = $faker->dateTimeBetween('-5 years', 'now');
             $month = $date->format('m');
             $year = $date->format('Y');
 
