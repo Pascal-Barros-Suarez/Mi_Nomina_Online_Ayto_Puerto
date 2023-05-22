@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { usePage } from '@inertiajs/react';
 import { Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale } from 'react-datepicker'; // Importamos la función registerLocale para registrar el localizador
-import es from 'date-fns/locale/es'; // Importamos el localizador en español
+import { registerLocale } from 'react-datepicker'; // Importar la función registerLocale para registrar el localizador
+import es from 'date-fns/locale/es'; // Importar el localizador en español
 
-registerLocale('es', es); // Registramos el localizador en español
+registerLocale('es', es); // Registrar el localizador en español
 
 const Calendar = ({ onMonthChange, onYearChange }) => {
+  const { auth } = usePage().props; //parametros pasados por inertia
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
@@ -15,15 +17,24 @@ const Calendar = ({ onMonthChange, onYearChange }) => {
       const month = selectedDate.getMonth() + 1;
       onMonthChange(month);
     }
-  
+
     if (onYearChange) {
       const year = selectedDate.getFullYear();
       onYearChange(year);
     }
-  }, []); // El efecto se ejecuta solo una vez al cargar la página
+  }, []);
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    const currentDate = new Date(); // Obtener la fecha actual
+    const hiringDate = new Date(auth.user.hiring_date); // Obtener la fecha de contratación del usuario autenticado
+    hiringDate.setDate(1); // Establecer el día en 1 para comparar solo mes y año
+
+    if (date > currentDate || date < hiringDate) {
+      return; // Ignorar la selección de una fecha fuera del rango permitido
+    } else {
+      setSelectedDate(date);
+    }
+
 
     if (onMonthChange) {
       const month = date.getMonth() + 1;
@@ -46,7 +57,9 @@ const Calendar = ({ onMonthChange, onYearChange }) => {
           dateFormat="MM/yyyy"
           showMonthYearPicker
           className="form-control"
-          locale="es" // Establecemos el localizador en español
+          locale="es"
+          maxDate={new Date()} // Limitar la fecha máxima al día de hoy
+          minDate={new Date(auth.user.hiring_date)} // Limitar la fecha mínima al valor de hiring_date del usuario autenticado
         />
       </Form.Group>
     </div>
