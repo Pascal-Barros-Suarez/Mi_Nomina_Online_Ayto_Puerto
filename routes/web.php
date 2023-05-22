@@ -22,20 +22,7 @@ use Inertia\Inertia;
 */
 
 
-/* Route::get('/dashboard', function () {
-    $lastPayroll = User::where('id', Auth::id())
-        ->with(['payroll' => function ($query) {
-            $query->orderBy('year', 'desc') // Ordenar las nóminas por año de forma descendente
-                ->orderBy('month', 'desc'); // Luego ordenar las nóminas por mes de forma descendente
-        }])
-        ->firstOrFail() //Obtener el usuario o lanzar una excepción si no se encuentra
-        ->payroll //accedemos a la variable
-        ->first();
-        $array = $lastPayroll->getAttributes();
-
-    return Inertia::render('Dashboard',  ['payroll' => $array]);
-})->middleware(['auth', 'verified'])->name('dashboard'); */
-
+//////////////////////////////////// DASHBOARD Y HOME ////////////////////////////////////
 Route::get('/dashboard', [PayrollController::class, 'lastPayroll'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -49,13 +36,16 @@ Route::get('/', function () {
     ]);
 });
 
+
+//////////////////////////////////// USER ////////////////////////////////////
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//payrolls
+
+//////////////////////////////////// PAYROLLS ////////////////////////////////////
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/generate-pdf', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
     Route::get('/userPayrolls', [PayrollController::class, 'userPayrolls'])->name('nomina.user.todas');
@@ -63,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 
-
+//////////////////////////////////// ADMIN ////////////////////////////////////
 /* Route::get('/adminPanel', function () {
  return Inertia::render('Dashboard');
 };) */
