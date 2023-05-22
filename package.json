@@ -25,6 +25,7 @@
         "@inertiajs/inertia": "^0.11.1",
         "bootstrap": "^5.2.3",
         "bootstrap-icons": "^1.10.5",
+        "date-fns": "^2.30.0",
         "pdfjs-dist": "^2.16.105",
         "postcss-import": "^14.0.2",
         "postcss-loader": "^4.2.0",
