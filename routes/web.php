@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PayrollController;
@@ -19,9 +21,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+//////////////////////////////////// DASHBOARD Y HOME ////////////////////////////////////
+Route::get('/dashboard', [PayrollController::class, 'lastPayroll'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -32,21 +36,24 @@ Route::get('/', function () {
     ]);
 });
 
+
+//////////////////////////////////// USER ////////////////////////////////////
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//payrolls
+
+//////////////////////////////////// PAYROLLS ////////////////////////////////////
 Route::middleware(['auth', 'verified'])->group(function () {
-Route::get('/generate-pdf', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
-Route::get('/payrolls', [PayrollController::class, 'allPayrolls'])->name('nomina.todas');
-Route::get('/userPayrolls', [PayrollController::class, 'UserPayrolls'])->name('nominas.user');
+    Route::get('/generate-pdf', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
+    Route::get('/userPayrolls', [PayrollController::class, 'userPayrolls'])->name('nomina.user.todas');
+    //Route::get('/userLastPayroll', [PayrollController::class, 'lastPayroll']);
 });
 
 
-
+//////////////////////////////////// ADMIN ////////////////////////////////////
 /* Route::get('/adminPanel', function () {
  return Inertia::render('Dashboard');
 };) */

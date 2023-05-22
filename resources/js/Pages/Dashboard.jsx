@@ -1,8 +1,10 @@
+//import { Inertia } from '@inertiajs/inertia';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
-import { dibujaFlash } from '../Components/FlashMessage';
+import { Head, usePage } from '@inertiajs/react';
 import UltimaNomina from '../Components/TablaUltimaNomina.jsx';
-import { Head } from '@inertiajs/react';
+import { dibujaFlash } from '../Components/FlashMessage';
+import Calendar from '../Components/Calendar.jsx';
 import PdfViewer from '../Components/Pdf';
 import Modal from '../Components/Modal';
 
@@ -16,9 +18,20 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Inertia } from '@inertiajs/inertia';
 
-export default function Dashboard({ auth }) {
-  const [pdfData, setPdfData] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+export default function Dashboard() {
+  const mostrarMensajesLog = false; //variable para mostrar console.logs
+  const { auth, payroll } = usePage().props; //parametros pasados por inertia
+  const [pdfData, setPdfData] = useState(null); //recogida del pdf
+  const [showModal, setShowModal] = useState(false); //modal
+  //recoger mes y año
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
+
+  if (mostrarMensajesLog) {//mensajes de prueba
+    console.log('nomina -', payroll);
+    console.log('auth -', auth);
+  }
+
 
   //controla si se ha enviado el formulario de generación de nomina
   const handleSubmit = (e) => {
@@ -43,7 +56,14 @@ export default function Dashboard({ auth }) {
   //cerrar el modal donde se vera la nomina
   const closeModal = () => {
     setShowModal(false);
+  };
 
+  const handleMonthChange = (month) => {
+    setSelectedMonth(month);
+  };
+
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
   };
 
   return (
@@ -56,16 +76,31 @@ export default function Dashboard({ auth }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             {<div className="p-6 text-gray-900 dark:text-gray-100">
+              {/* mensaje flash */}
+              {mostrarMensajesLog && console.log('dibuja flash -', dibujaFlash())}
+              {dibujaFlash()}
+
               <h5>Bienvenido al visualizador de nominas por favor presione el boton para generar su nómina</h5>
               <br />
-              <UltimaNomina></UltimaNomina>
-              {console.log('dibujaFlash', dibujaFlash())}
-              {dibujaFlash()}
-              <Form onSubmit={handleSubmit}>
-                <div className=' justify-content-center text-center '>
-                  <Button variant="secondary" type='submit'>Generar Ultima Nómina</Button>
+              {/* tabla de datos de la ultima nomina */}
+              <UltimaNomina nomina={payroll}></UltimaNomina>
+              <br /><hr />
+
+              <div className='row'>
+                <div className='col-6'>
+                  <Calendar onMonthChange={handleMonthChange} onYearChange={handleYearChange} />
+                  <p>Selected Month: {selectedMonth}</p>
+                  <p>Selected Year: {selectedYear}</p>
                 </div>
-              </Form>
+
+                <div className='col-6' >
+                  <Form onSubmit={handleSubmit}>
+                    <div className=' justify-content-center text-center '>
+                      <Button variant="secondary" type='submit'>Generar Ultima Nómina</Button>
+                    </div>
+                  </Form>
+                </div>
+              </div>
               <br />
 
               {/* modal */}
@@ -79,8 +114,8 @@ export default function Dashboard({ auth }) {
                   <PdfViewer pdfData={pdfData} ></PdfViewer>
                 </Modal>
               )}
-
-            </div>}
+            </div>
+            }
           </div>
         </div>
       </div>
