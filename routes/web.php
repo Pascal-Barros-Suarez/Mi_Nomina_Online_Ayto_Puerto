@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/generate-pdf', [PayrollController::class, 'generatePdf'])->name('nomina.pdf');
     Route::get('/userPayrolls', [PayrollController::class, 'userPayrolls'])->name('nomina.user.todas');
-    Route::get('/userLastPayroll', [PayrollController::class, 'lastPayroll']);
+    //Route::get('/userLastPayroll', [PayrollController::class, 'lastPayroll']);
 });
 
 

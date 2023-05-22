@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
 
 const UltimaNomina = ({ nomina }) => {
-  console.log('mi-nomina', nomina);
   return (
     <>
       <h1>Última Nómina</h1>

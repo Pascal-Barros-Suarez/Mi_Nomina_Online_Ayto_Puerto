@@ -1,74 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Form } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const Calendar = () => {
+const Calendar = ({ onMonthChange, onYearChange }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const handleDateChange = (event) => {
-    const { value } = event.target;
-    const [selectedYear, selectedMonth] = value.split('-');
-    const newDate = new Date(selectedYear, selectedMonth - 1);
-    setSelectedDate(newDate);
-  };
-
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    return `${year}-${month}`;
-  };
-
-  const renderCalendar = () => {
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-
-    const days = [];
-    for (let i = 1; i <= daysInMonth; i++) {
-      days.push(i);
+  useEffect(() => {
+    if (onMonthChange) {
+      const month = selectedDate.getMonth() + 1;
+      onMonthChange(month);
     }
 
-    return (
-      <div>
-        <div>
-          <select value={formatDate(selectedDate)} onChange={handleDateChange}>
-            <option value="2021-01">January 2021</option>
-            <option value="2021-02">February 2021</option>
-            <option value="2021-03">March 2021</option>
-            {/* ... Rest of the months */}
-            <option value="2023-05">May 2023</option>
-          </select>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Sun</th>
-              <th>Mon</th>
-              <th>Tue</th>
-              <th>Wed</th>
-              <th>Thu</th>
-              <th>Fri</th>
-              <th>Sat</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {Array(firstDay.getDay())
-                .fill('')
-                .map((_, index) => (
-                  <td key={`empty-${index}`}></td>
-                ))}
-              {days.map((day) => (
-                <td key={`day-${day}`}>{day}</td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
+    if (onYearChange) {
+      const year = selectedDate.getFullYear();
+      onYearChange(year);
+    }
+  }, []); // El segundo argumento vacío [] indica que se ejecutará solo una vez, al cargar la página
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+
+    if (onMonthChange) {
+      const month = date.getMonth() + 1;
+      onMonthChange(month);
+    }
+
+    if (onYearChange) {
+      const year = date.getFullYear();
+      onYearChange(year);
+    }
   };
 
-  return <div>{renderCalendar()}</div>;
+  return (
+    <div>
+      <Form.Group controlId="formCalendar">
+        <Form.Label className=' h5'>Selecciona una fecha:</Form.Label>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="MM/yyyy"
+          showMonthYearPicker
+          className="form-control"
+        />
+      </Form.Group>
+    </div>
+  );
 };
 
 export default Calendar;
