@@ -22,7 +22,7 @@ class PayrollController extends Controller
   {
     $payrolls = User::where('id', Auth::id())
       ->with('payroll')
-      ->latest()
+      //->latest()
       ->get();
 
     return dd($payrolls);
@@ -46,8 +46,9 @@ class PayrollController extends Controller
   public function generatePdf(Request $request)
   {
     //recoger datos
-    $month = $request->input('month');
-    $year = $request->input('year');
+    $month = intval($request->input('month'));
+    $year = intval($request->input('year'));
+
 
     // Consulta de datos para el PDF
     $user = User::where('id', Auth::id())
@@ -75,10 +76,10 @@ class PayrollController extends Controller
 
     //datos del usuario
     $userData = $user->getAttributes();
-    
+
     //datos de la empresa
     $companiData = Config::get('compani.COMPANI_FIELDS');
-    
+
     //datos de la nomina
     $payrollData = $user->payroll->first()->getAttributes();
 
@@ -262,8 +263,7 @@ class PayrollController extends Controller
     $options = $dompdf->getOptions();
     //$options->setDebugCss(true);
     $dompdf->setOptions($options);
-    //$dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
-    $dompdf->loadHtml('<p>hola</p>'); // Usa la variable $html del archivo pdf-template.php
+    $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
     $dompdf->setPaper('A4', 'portrait');
     $dompdf->render();
     $pdfContent = $dompdf->output();
@@ -274,11 +274,5 @@ class PayrollController extends Controller
       'Content-Type' => 'application/pdf',
       'Content-Disposition' => 'inline; filename="nomina.pdf"'
     ]);
-    
-    // Retornar la respuesta a Inertia con el PDF
-    /* return Inertia::render('Dashboard', [
-      'pdfContent' => $pdfContent,
-      'filename' => 'Nomina.pdf'
-    ]); */
   }
 }

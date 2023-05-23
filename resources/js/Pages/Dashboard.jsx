@@ -29,15 +29,20 @@ export default function Dashboard() {
   // controla si se ha enviado el formulario de generación de nómina
   const handleSubmit = (e) => {
     e.preventDefault();
-    Inertia.post('/generate-pdf', { month: selectedMonth, year: selectedYear }, {
-      preserveScroll: true,
-      onSuccess: (response) => {
-        const blob = new Blob([response], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        setPdfData(url);
-      },
-    });
+    fetchPdf();
+    openModal();
   };
+
+  //consulta la nomina con fech
+  const fetchPdf = async () => {
+    const askUrl = `/generate-pdf?month=${selectedMonth}&year=${selectedYear}`; // Agregar los parámetros al URL
+
+    const response = await fetch(askUrl);
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    setPdfData(url);
+  };
+
 
   // abrir el modal donde se verá la nómina
   const openModal = () => {
@@ -88,7 +93,7 @@ export default function Dashboard() {
                 <div className='col-6'>
                   <Form onSubmit={handleSubmit}>
                     <div className='justify-content-center text-center'>
-                      <Button variant="secondary" type='submit'>Generar Última Nómina</Button>
+                      <Button variant="secondary" type='submit'>Generar Nómina</Button>
                     </div>
                   </Form>
                 </div>
@@ -102,8 +107,7 @@ export default function Dashboard() {
                     <h1 className='col-10 text-center'>Visor de Nóminas</h1>
                     <Button aria-label="Hide" className='col m-2 display-3' onClick={closeModal} variant="outline-danger">X</Button>
                   </div>
-                  <p>holi</p>
-                  {/* <PdfViewer pdfData={pdfData}></PdfViewer> */}
+                  <PdfViewer pdfData={pdfData}></PdfViewer>
                 </Modal>
               )}
             </div>
