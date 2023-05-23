@@ -44,13 +44,47 @@ class PayrollController extends Controller
   }
 
 
-  public function generatePdf()
+  public function prueba(Request $request)
   {
-    //datos para el pdf
+    //recoger datos
+    $month = $request->input('month');
+    $year = $request->input('year');
+    dd($month);
+    // Consulta de datos para el PDF
     $payroll = User::where('id', Auth::id())
-      ->with('payroll')
+      ->with(['payroll' => function ($query) use ($month, $year) {
+        $query->where('month', $month)
+          ->where('year', $year);
+      }])
       ->latest()
-      ->get();
+      ->first();
+
+    //return dd($payroll);
+  }
+
+  public function generatePdf(Request $request)
+  {
+    //recoger datos
+    $month = $request->input('month');
+    $year = $request->input('year');
+
+    // Consulta de datos para el PDF
+    $payroll = User::where('id', Auth::id())
+      ->with(['payroll' => function ($query) use ($month, $year) {
+        $query->where('month', $month)
+          ->where('year', $year);
+      }])
+      ->latest()
+      ->first();
+
+    dd($payroll);
+
+    // Verificar si se encontró el usuario y la nómina
+    if (!$payroll) {
+      // Manejar el caso de que no se encuentre el usuario o la nómina
+      // Puedes retornar un mensaje de error, lanzar una excepción, etc.
+      return response()->json(['error' => 'Usuario o nómina no encontrados'], 404);
+    }
 
     //require_once('/app/templates/pdf-template.php'); // Importa el archivo pdf-template.php
 
