@@ -43,25 +43,6 @@ class PayrollController extends Controller
     return Inertia::render('Dashboard',  ['payroll' => $array]);
   }
 
-
-  public function prueba(Request $request)
-  {
-    //recoger datos
-    $month = $request->input('month');
-    $year = $request->input('year');
-    dd($month);
-    // Consulta de datos para el PDF
-    $payroll = User::where('id', Auth::id())
-      ->with(['payroll' => function ($query) use ($month, $year) {
-        $query->where('month', $month)
-          ->where('year', $year);
-      }])
-      ->latest()
-      ->first();
-
-    //return dd($payroll);
-  }
-
   public function generatePdf(Request $request)
   {
     //recoger datos
@@ -69,7 +50,7 @@ class PayrollController extends Controller
     $year = $request->input('year');
 
     // Consulta de datos para el PDF
-    $payroll = User::where('id', Auth::id())
+    $user = User::where('id', Auth::id())
       ->with(['payroll' => function ($query) use ($month, $year) {
         $query->where('month', $month)
           ->where('year', $year);
@@ -77,10 +58,8 @@ class PayrollController extends Controller
       ->latest()
       ->first();
 
-    dd($payroll);
-
     // Verificar si se encontró el usuario y la nómina
-    if (!$payroll) {
+    if (!$user) {
       // Manejar el caso de que no se encuentre el usuario o la nómina
       // Puedes retornar un mensaje de error, lanzar una excepción, etc.
       return response()->json(['error' => 'Usuario o nómina no encontrados'], 404);
@@ -94,15 +73,18 @@ class PayrollController extends Controller
     $customCSS = file_get_contents(public_path('css/custom.css'));
     //$customHTML = file_get_contents(public_path('html/template.html'));
 
+    //datos del usuario
+    $userData = $user->getAttributes();
+    
     //datos de la empresa
     $companiData = Config::get('compani.COMPANI_FIELDS');
-    $companiName = $companiData['nombre'];
-    $companiAddres = $companiData['domicilio'];
-    $cif = $companiData['cif'];
-    $accountQuotation = $companiData['cuenta de cotizacion'];
+    
+    //datos de la nomina
+    $payrollData = $user->payroll->first()->getAttributes();
 
     $html = '<html>
             <head>
+            <meta charset="UTF-8">
                 <style>
                 '  . $bootstrapCCS . '
                 '  . $bootstrapJS . '
@@ -120,47 +102,47 @@ class PayrollController extends Controller
                     <tbody>
                       <tr>
                         <td><strong>Nombre:</strong></td>
-                        <td>' . $payroll[0]->name . '</td>
+                        <td>' . $userData["name"] . '</td>
                       </tr>
                       <tr>
                         <td><strong>DNI:</strong></td>
-                        <td>' . $payroll[0]->dni . '</td>
+                        <td>' . $userData['dni'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Número de seguridad social:</strong></td>
-                        <td>' . $payroll[0]->social_security_number . '</td>
+                        <td>' . $userData['social_security_number'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Departamento:</strong></td>
-                        <td>' . $payroll[0]->department . '</td>
+                        <td>' . $userData['department'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Posición/Cargo:</strong></td>
-                        <td>' . $payroll[0]->position . '</td>
+                        <td>' . $userData['position'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Fecha de contratación:</strong></td>
-                        <td>' . $payroll[0]->hiring_date . '</td>
+                        <td>' . $userData['hiring_date'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Grupo:</strong></td>
-                        <td>' . $payroll[0]->group . '</td>
+                        <td>' . $userData['group'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Nivel:</strong></td>
-                        <td>' . $payroll[0]->level . '</td>
+                        <td>' . $userData['level'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>CNAE 93:</strong></td>
-                        <td>' . $payroll[0]->cnae_93 . '</td>
+                        <td>' . $userData['cnae_93'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Grupo de cotización:</strong></td>
-                        <td>' . $payroll[0]->contribution_group . '</td>
+                        <td>' . $userData['contribution_group'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Tipo:</strong></td>
-                        <td>' . $payroll[0]->type . '</td>
+                        <td>' . $userData['type'] . '</td>
                       </tr>
                     </tbody>
                   </table>
@@ -171,19 +153,19 @@ class PayrollController extends Controller
                     <tbody>
                       <tr>
                         <td><strong>Nombre de la empresa:</strong></td>
-                        <td>' . $companiName . '</td>
+                        <td>' . $companiData['nombre'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Domicilio:</strong></td>
-                        <td>' . $companiAddres . '</td>
+                        <td>' . $companiData['domicilio'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>CIF:</strong></td>
-                        <td>' . $cif . '</td>
+                        <td>' . $companiData['cif'] . '</td>
                       </tr>
                       <tr>
                         <td><strong>Cuenta de cotización:</strong></td>
-                        <td>' . $accountQuotation . '</td>
+                        <td>' . $companiData['cuenta_de_cotizacion'] . '</td>
                       </tr>
                     </tbody>
                   </table>
@@ -203,15 +185,11 @@ class PayrollController extends Controller
                     <tbody>
                       <tr>
                         <td>Sueldo base</td>
-                        <td>' . '1212' . '</td>
+                        <td>' . $payrollData['gross_salary'] . '</td>
                       </tr>
                       <tr>
                         <td>Complemento destino</td>
-                        <td>200€</td>
-                      </tr>
-                      <tr>
-                        <td>Residencia</td>
-                        <td>50€</td>
+                        <td>' . $payrollData['gross_salary'] . '</td>
                       </tr>
                       <tr>
                         <td>Complemento específico</td>
@@ -284,7 +262,8 @@ class PayrollController extends Controller
     $options = $dompdf->getOptions();
     //$options->setDebugCss(true);
     $dompdf->setOptions($options);
-    $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
+    //$dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
+    $dompdf->loadHtml('<p>hola</p>'); // Usa la variable $html del archivo pdf-template.php
     $dompdf->setPaper('A4', 'portrait');
     $dompdf->render();
     $pdfContent = $dompdf->output();
@@ -293,9 +272,9 @@ class PayrollController extends Controller
 
     return new Response($pdfContent, 200, [
       'Content-Type' => 'application/pdf',
-      'Content-Disposition' => 'inline; filename="Nómina.pdf"'
+      'Content-Disposition' => 'inline; filename="nomina.pdf"'
     ]);
-
+    
     // Retornar la respuesta a Inertia con el PDF
     /* return Inertia::render('Dashboard', [
       'pdfContent' => $pdfContent,

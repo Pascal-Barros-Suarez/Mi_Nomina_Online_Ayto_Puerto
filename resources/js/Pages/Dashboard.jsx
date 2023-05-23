@@ -14,7 +14,7 @@ import Button from 'react-bootstrap/Button';
 
 export default function Dashboard() {
   const mostrarMensajesLog = false; // variable para mostrar console.logs
-  const { auth, payroll } = usePage().props; // parametros pasados por inertia
+  const { auth, payroll } = usePage().props; // parametros pasados por inertia pdfContent
   const [pdfData, setPdfData] = useState(null); // recogida del pdf
   const [showModal, setShowModal] = useState(false); // modal
   const [selectedMonth, setSelectedMonth] = useState(null); // recoger mes
@@ -35,7 +35,6 @@ export default function Dashboard() {
         const blob = new Blob([response], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
         setPdfData(url);
-        openModal();
       },
     });
   };
@@ -82,8 +81,8 @@ export default function Dashboard() {
               <div className='row'>
                 <div className='col-6'>
                   <Calendar onMonthChange={handleMonthChange} onYearChange={handleYearChange} />
-                  <p>Selected Month: {selectedMonth}</p>
-                  <p>Selected Year: {selectedYear}</p>
+                  {/* <p>Selected Month: {selectedMonth}</p>
+                  <p>Selected Year: {selectedYear}</p> */}
                 </div>
 
                 <div className='col-6'>
@@ -103,7 +102,8 @@ export default function Dashboard() {
                     <h1 className='col-10 text-center'>Visor de Nóminas</h1>
                     <Button aria-label="Hide" className='col m-2 display-3' onClick={closeModal} variant="outline-danger">X</Button>
                   </div>
-                  <PdfViewer pdfData={pdfData}></PdfViewer>
+                  <p>holi</p>
+                  {/* <PdfViewer pdfData={pdfData}></PdfViewer> */}
                 </Modal>
               )}
             </div>
