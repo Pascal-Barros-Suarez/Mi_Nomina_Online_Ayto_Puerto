@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Payroll;
 use App\Models\User;
 
-use Dompdf\Dompdf;
 use Inertia\Inertia;
+use Dompdf\Dompdf;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -43,7 +44,6 @@ class PayrollController extends Controller
   }
 
 
-
   public function generatePdf()
   {
     //datos para el pdf
@@ -52,20 +52,22 @@ class PayrollController extends Controller
       ->latest()
       ->get();
 
-    require_once('/app/templates/pdf-template.php'); // Importa el archivo pdf-template.php
+    //require_once('/app/templates/pdf-template.php'); // Importa el archivo pdf-template.php
 
-    //creaccion del pdf
-    $dompdf = new Dompdf();
-    $options = $dompdf->getOptions();
-    //$options->setDebugCss(true);
     //contenido del pdf
-
     $bootstrapJS = file_get_contents(public_path('css/bootstrap/bootstrap.min.js'));
     $bootstrapCCS = file_get_contents(public_path('css/bootstrap/bootstrap.min.css'));
     $customCSS = file_get_contents(public_path('css/custom.css'));
+    //$customHTML = file_get_contents(public_path('html/template.html'));
 
-    $html = '
-        <html>
+    //datos de la empresa
+    $companiData = Config::get('compani.COMPANI_FIELDS');
+    $companiName = $companiData['nombre'];
+    $companiAddres = $companiData['domicilio'];
+    $cif = $companiData['cif'];
+    $accountQuotation = $companiData['cuenta de cotizacion'];
+
+    $html = '<html>
             <head>
                 <style>
                 '  . $bootstrapCCS . '
@@ -135,19 +137,19 @@ class PayrollController extends Controller
                     <tbody>
                       <tr>
                         <td><strong>Nombre de la empresa:</strong></td>
-                        <td>AYUNTAMIENTO DE PUERTO DEL ROSARIO</td>
+                        <td>' . $companiName . '</td>
                       </tr>
                       <tr>
                         <td><strong>Domicilio:</strong></td>
-                        <td>CL FERNANDEZ CASTAÑEIRA 2 35600 PUERTO DEL ROSARIO (LAS PALMAS)</td>
+                        <td>' . $companiAddres . '</td>
                       </tr>
                       <tr>
                         <td><strong>CIF:</strong></td>
-                        <td>P3501800A</td>
+                        <td>' . $cif . '</td>
                       </tr>
                       <tr>
                         <td><strong>Cuenta de cotización:</strong></td>
-                        <td>1234567890</td>
+                        <td>' . $accountQuotation . '</td>
                       </tr>
                     </tbody>
                   </table>
@@ -167,7 +169,7 @@ class PayrollController extends Controller
                     <tbody>
                       <tr>
                         <td>Sueldo base</td>
-                        <td>1000€</td>
+                        <td>' . '1212' . '</td>
                       </tr>
                       <tr>
                         <td>Complemento destino</td>
@@ -240,24 +242,30 @@ class PayrollController extends Controller
     
             </body>
         </html>';
+
+
+
+    //creaccion del pdf
+    $dompdf = new Dompdf();
+    $options = $dompdf->getOptions();
+    //$options->setDebugCss(true);
     $dompdf->setOptions($options);
     $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
     $dompdf->setPaper('A4', 'portrait');
-    $dompdf->
     $dompdf->render();
     $pdfContent = $dompdf->output();
 
     Session::flash('success', 'Generating PDF!');
 
-    /* return new Response($pdfContent, 200, [
+    return new Response($pdfContent, 200, [
       'Content-Type' => 'application/pdf',
       'Content-Disposition' => 'inline; filename="Nómina.pdf"'
-    ]); */
+    ]);
 
-    // Retornar la respuesta a Inertia con el PDF en base64
-    return Inertia::render('Payroll', [
+    // Retornar la respuesta a Inertia con el PDF
+    /* return Inertia::render('Dashboard', [
       'pdfContent' => $pdfContent,
       'filename' => 'Nomina.pdf'
-    ]);
+    ]); */
   }
 }

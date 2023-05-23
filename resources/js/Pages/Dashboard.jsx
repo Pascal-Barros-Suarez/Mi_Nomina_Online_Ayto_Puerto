@@ -19,7 +19,7 @@ import Button from 'react-bootstrap/Button';
 import { Inertia } from '@inertiajs/inertia';
 
 export default function Dashboard() {
-  const mostrarMensajesLog = true; //variable para mostrar console.logs
+  const mostrarMensajesLog = false; //variable para mostrar console.logs
   const { auth, payroll } = usePage().props; //parametros pasados por inertia
   const [pdfData, setPdfData] = useState(null); //recogida del pdf
   const [showModal, setShowModal] = useState(false); //modal
