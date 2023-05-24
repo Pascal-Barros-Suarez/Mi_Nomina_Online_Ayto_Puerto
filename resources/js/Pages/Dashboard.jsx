@@ -2,6 +2,7 @@ import { Inertia } from '@inertiajs/inertia';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/react';
+import { useMediaQuery } from 'react-responsive';
 import UltimaNomina from '../Components/TablaUltimaNomina.jsx';
 import { dibujaFlash } from '../Components/FlashMessage';
 import Calendar from '../Components/Calendar.jsx';
@@ -13,13 +14,17 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 export default function Dashboard() {
+  //configuracion
   const mostrarMensajesLog = false; // variable para mostrar console.logs
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' }); //establece si el dispositivo es movil
+  //variables
   const { auth, payroll } = usePage().props; // parametros pasados por inertia pdfContent
   const [pdfData, setPdfData] = useState(null); // recogida del pdf
   const [showModal, setShowModal] = useState(false); // modal
   const [selectedMonth, setSelectedMonth] = useState(null); // recoger mes
   const [selectedYear, setSelectedYear] = useState(null); // recoger año
 
+  
   if (mostrarMensajesLog) {
     // mensajes de prueba
     console.log('nomina -', payroll);
@@ -80,23 +85,18 @@ export default function Dashboard() {
               <br />
               {/* tabla de datos de la última nómina */}
               <UltimaNomina nomina={payroll}></UltimaNomina>
-              <br />
-              <hr />
 
-              <div className='row'>
-                <div className='col-6'>
+              <hr className=' mt-5 mb-5' />
+
+              <div className='row justify-content-around mb-2'>
+                <div className={isMobile ? 'col-6' : 'col-3'}>
                   <Calendar onMonthChange={handleMonthChange} onYearChange={handleYearChange} />
-                  {/* <p>Selected Month: {selectedMonth}</p>
-                  <p>Selected Year: {selectedYear}</p> */}
                 </div>
 
-                <div className='col-6'>
-                  <Form onSubmit={handleSubmit}>
-                    <div className='justify-content-center text-center'>
-                      <Button variant="secondary" type='submit'>Generar Nómina</Button>
-                    </div>
-                  </Form>
-                </div>
+                <div className={isMobile ? 'col-6 d-flex align-items-center justify-content-center' : 'col-3 d-flex align-items-center justify-content-center'}>
+                  <Form className='' onSubmit={handleSubmit}>
+                    <Button variant="secondary" type='submit'>Generar Nómina</Button>
+                  </Form></div>
               </div>
               <br />
 

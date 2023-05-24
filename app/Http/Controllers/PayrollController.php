@@ -56,7 +56,7 @@ class PayrollController extends Controller
         $query->where('month', $month)
           ->where('year', $year);
       }])
-      ->latest()
+      //->latest()
       ->first();
 
     // Verificar si se encontró el usuario y la nómina
