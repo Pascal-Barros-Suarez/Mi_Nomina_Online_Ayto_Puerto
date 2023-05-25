@@ -52,9 +52,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Route::get('/userLastPayroll', [PayrollController::class, 'lastPayroll']);
 });
 
-
-//////////////////////////////////// ADMIN ////////////////////////////////////
-/* Route::get('/adminPanel', function () {
- return Inertia::render('Dashboard');
-};) */
 require __DIR__ . '/auth.php';

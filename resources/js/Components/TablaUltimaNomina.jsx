@@ -20,10 +20,10 @@ const UltimaNomina = ({ nomina }) => {
           </thead>
           <tbody>
             <tr>
-              <td>{nomina.month}, del {nomina.year}</td>
+              <td>{nomina.month !== "" ? nomina.month + ', del ' + nomina.year : ""}</td>
               <td>{nomina.base_salary}</td>
               <td>{nomina.gross_salary}</td>
-              <td>{nomina.income_tax}%</td>
+              <td>{nomina.income_tax !== "" ? nomina.income_tax + '%' : ""}</td>
               <td>{nomina.concept}</td>
             </tr>
           </tbody>

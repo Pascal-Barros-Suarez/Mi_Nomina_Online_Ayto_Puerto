@@ -38,9 +38,23 @@ class PayrollController extends Controller
       ->firstOrFail() //Obtener el usuario o lanzar una excepción si no se encuentra
       ->payroll //accedemos a la variable
       ->first(); //recoger solo la ultima nomina
-    $array = $lastPayroll->getAttributes();
+    
+      if (empty($lastPayroll)) {
+      Session::flash('error', 'Generating PDF!');
+      $array = array(
+        "month" => "",
+        "year" => "",
+        "base_salary" => "",
+        "gross_salary" => "",
+        "income_tax" => "",
+        "concept" => ""
+      );
+      return Inertia::render('Dashboard',  ['payroll' => $array]);
 
-    return Inertia::render('Dashboard',  ['payroll' => $array]);
+    } else {
+      $array = $lastPayroll->getAttributes();
+      return Inertia::render('Dashboard',  ['payroll' => $array]);
+    }
   }
 
   public function generatePdf(Request $request)
@@ -56,7 +70,6 @@ class PayrollController extends Controller
         $query->where('month', $month)
           ->where('year', $year);
       }])
-      //->latest()
       ->first();
 
     // Verificar si se encontró el usuario y la nómina
@@ -64,26 +77,31 @@ class PayrollController extends Controller
       // Manejar el caso de que no se encuentre el usuario o la nómina
       // Puedes retornar un mensaje de error, lanzar una excepción, etc.
       return response()->json(['error' => 'Usuario o nómina no encontrados'], 404);
-    }
+    } else {
 
-    //require_once('/app/templates/pdf-template.php'); // Importa el archivo pdf-template.php
+      //require_once('/app/templates/pdf-template.php'); // Importa el archivo pdf-template.php
 
-    //contenido del pdf
-    $bootstrapJS = file_get_contents(public_path('css/bootstrap/bootstrap.min.js'));
-    $bootstrapCCS = file_get_contents(public_path('css/bootstrap/bootstrap.min.css'));
-    $customCSS = file_get_contents(public_path('css/custom.css'));
-    //$customHTML = file_get_contents(public_path('html/template.html'));
+      //contenido del pdf
+      $bootstrapJS = file_get_contents(public_path('css/bootstrap/bootstrap.min.js'));
+      $bootstrapCCS = file_get_contents(public_path('css/bootstrap/bootstrap.min.css'));
+      $customCSS = file_get_contents(public_path('css/custom.css'));
+      //$customHTML = file_get_contents(public_path('html/template.html'));
 
-    //datos del usuario
-    $userData = $user->getAttributes();
+      //datos del usuario
+      $userData = $user->getAttributes();
 
-    //datos de la empresa
-    $companiData = Config::get('compani.COMPANI_FIELDS');
+      //datos de la empresa
+      $companiData = Config::get('compani.COMPANI_FIELDS');
 
-    //datos de la nomina
-    $payrollData = $user->payroll->first()->getAttributes();
+      //datos de la nomina
+      if (empty($user->payroll->first())) {
+        Session::flash('success', 'Generating PDF!');
+        return null;
+      } else {
+        $payrollData = $user->payroll->first()->getAttributes();
+      }
 
-    $html = '<html>
+      $html = '<html>
             <head>
             <meta charset="UTF-8">
                 <style>
@@ -258,21 +276,20 @@ class PayrollController extends Controller
 
 
 
-    //creaccion del pdf
-    $dompdf = new Dompdf();
-    $options = $dompdf->getOptions();
-    //$options->setDebugCss(true);
-    $dompdf->setOptions($options);
-    $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->render();
-    $pdfContent = $dompdf->output();
+      //creaccion del pdf
+      $dompdf = new Dompdf();
+      $options = $dompdf->getOptions();
+      //$options->setDebugCss(true);
+      $dompdf->setOptions($options);
+      $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
+      $dompdf->setPaper('A4', 'portrait');
+      $dompdf->render();
+      $pdfContent = $dompdf->output();
 
-    Session::flash('success', 'Generating PDF!');
-
-    return new Response($pdfContent, 200, [
-      'Content-Type' => 'application/pdf',
-      'Content-Disposition' => 'inline; filename="nomina.pdf"'
-    ]);
+      return new Response($pdfContent, 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="nomina.pdf"'
+      ]);
+    }
   }
 }

@@ -32,7 +32,7 @@ export function dibujaFlash() {
                 <Toast.Body>
                     <strong className="fa fa-flash text-white">{flash.error}</strong>
                 </Toast.Body>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </Toast> : ''
         flash.error = null;
     }
