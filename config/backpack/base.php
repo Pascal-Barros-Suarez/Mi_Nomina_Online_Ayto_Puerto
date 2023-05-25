@@ -31,7 +31,7 @@ return [
     // The string below will be passed through the url() helper.
     // - default: '' (project root)
     // - alternative: 'admin' (the admin's dashboard)
-    'home_link' => '/',
+    'home_link' => '/admin/dashboard',
 
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
@@ -41,7 +41,7 @@ return [
     // ---------
 
     // Show "Getting Started with Backpack" info block?
-    'show_getting_started' => env('APP_ENV') == 'local',
+    'show_getting_started' => false,//env('APP_ENV') == 'local',
 
     // ------
     // STYLES
@@ -122,7 +122,7 @@ return [
     'developer_name' => 'Pascal Barros Suarez',
 
     // Developer website. Link in footer. Type false if you want to hide it.
-    'developer_link' => '',
+    'developer_link' => 'https://github.com/Pascal-Barros-Suarez',
 
     // Show powered by Laravel Backpack in the footer? true/false
     'show_powered_by' => true,
