@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Hash; 
 
 /**
  * Class UserCrudController
@@ -52,6 +53,7 @@ class UserCrudController extends CrudController
         CRUD::column('cnae_93');
         CRUD::column('contribution_group');
         CRUD::column('type');
+        CRUD::column('is_admin');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -73,7 +75,9 @@ class UserCrudController extends CrudController
         CRUD::field('name');
         CRUD::field('dni');
         CRUD::field('email');
-        CRUD::field('password');
+        CRUD::field('password')->on('saving', function ($entry) {
+            $entry->password = Hash::Make($entry->password);
+        });
         CRUD::field('social_security_number');
         CRUD::field('department');
         CRUD::field('position');
@@ -83,7 +87,8 @@ class UserCrudController extends CrudController
         CRUD::field('cnae_93');
         CRUD::field('contribution_group');
         CRUD::field('type');
-
+        CRUD::field('is_admin');
+        
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
