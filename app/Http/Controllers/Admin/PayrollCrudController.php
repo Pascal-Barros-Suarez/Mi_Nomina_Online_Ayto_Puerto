@@ -43,8 +43,16 @@ class PayrollCrudController extends CrudController
         CRUD::column('gross_salary');
         CRUD::column('base_salary');
         CRUD::column('income_tax');
-        CRUD::column('allowances');
+        CRUD::column('destination_allowance');
+        CRUD::column('specific_allowance');
         CRUD::column('concept');
+        CRUD::column('specific_complement');
+        CRUD::column('commission_attendance');
+        CRUD::column('common_contingencies');
+        CRUD::column('unemployment');
+        CRUD::column('mei');
+        CRUD::column('professional_training');
+        CRUD::column('csic');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -67,8 +75,16 @@ class PayrollCrudController extends CrudController
         CRUD::field('gross_salary');
         CRUD::field('base_salary');
         CRUD::field('income_tax');
-        CRUD::field('allowances');
+        CRUD::field('destination_allowance');
+        CRUD::field('specific_allowance');
         CRUD::field('concept');
+        CRUD::field('specific_complement');
+        CRUD::field('commission_attendance');
+        CRUD::field('common_contingencies');
+        CRUD::field('unemployment');
+        CRUD::field('mei');
+        CRUD::field('professional_training');
+        CRUD::field('csic');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
