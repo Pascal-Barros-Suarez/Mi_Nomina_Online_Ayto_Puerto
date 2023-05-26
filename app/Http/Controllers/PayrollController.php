@@ -38,8 +38,8 @@ class PayrollController extends Controller
       ->firstOrFail() //Obtener el usuario o lanzar una excepción si no se encuentra
       ->payroll //accedemos a la variable
       ->first(); //recoger solo la ultima nomina
-    
-      if (empty($lastPayroll)) {
+
+    if (empty($lastPayroll)) {
       Session::flash('error', 'Generating PDF!');
       $array = array(
         "month" => "",
@@ -50,7 +50,6 @@ class PayrollController extends Controller
         "concept" => ""
       );
       return Inertia::render('Dashboard',  ['payroll' => $array]);
-
     } else {
       $array = $lastPayroll->getAttributes();
       return Inertia::render('Dashboard',  ['payroll' => $array]);
@@ -94,14 +93,67 @@ class PayrollController extends Controller
       $companiData = Config::get('compani.COMPANI_FIELDS');
 
       //datos de la nomina
-      if (empty($user->payroll->first())) {
-        Session::flash('success', 'Generating PDF!');
-        return null;
+      $payrollData = $user->payroll->first();
+      if (empty($payrollData)) {
+        Session::flash('success', 'No tiene nomina de el mes seleccionado!');
+        // Lanzar una excepción o retornar un mensaje de error
+        throw new \Exception('No tiene nómina para el mes seleccionado');
       } else {
-        $payrollData = $user->payroll->first()->getAttributes();
-      }
+        $payrollData = $payrollData->getAttributes();
 
-      $html = '<html>
+        switch ($payrollData["month"]) {
+          case 1:
+            $month = "Enero";
+            break;
+          case 2:
+            $month = "Febrero";
+            break;
+          case 3:
+            $month = "Marzo";
+            break;
+          case 4:
+            $month = "Abril";
+            break;
+          case 5:
+            $month = "Mayo";
+            break;
+          case 6:
+            $month = "Junio";
+            break;
+          case 7:
+            $month = "Julio";
+            break;
+          case 8:
+            $month = "Agosto";
+            break;
+          case 9:
+            $month = "Septiembre";
+            break;
+          case 10:
+            $month = "Octubre";
+            break;
+          case 11:
+            $month = "Noviembre";
+            break;
+          case 12:
+            $month = "Diciembre";
+            break;
+          default:
+            // Asigna un valor por defecto si el valor de month no se encuentra en el rango 1-12
+            $month = "Mes desconocido";
+            break;
+        }
+        $totalDeducciones = $payrollData['commission_attendance']
+          + $payrollData['unemployment']
+          + $payrollData['mei']
+          + $payrollData['professional_training'];
+
+        $irpfResolved  =  $payrollData['gross_salary'] * ($payrollData['income_tax'] / 100);
+
+        $totalOtrasDeducciones = $irpfResolved
+          + $payrollData['csic'];
+
+        $html = '<html>
             <head>
             <meta charset="UTF-8">
                 <style>
@@ -112,7 +164,7 @@ class PayrollController extends Controller
             </head>
             <body>
             <div class="container">
-              <h1>Nómina</h1>
+              <h1>Nómina de ' . $month . ', del ' . $payrollData["year"] . '</h1>
               <hr />
               <div class="row">
                 <div class="col-md-6 tbc-123">
@@ -194,6 +246,9 @@ class PayrollController extends Controller
               <div class="row">
                 <div class="col-md-12">
                   <h2>Detalles de la nómina</h2>
+                  <br/>
+                  <h4 class="mb-5">DEVENGOS </h4>
+
                   <table class="table">
                     <thead>
                       <tr>
@@ -202,21 +257,27 @@ class PayrollController extends Controller
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Sueldo base</td>
-                        <td>' . $payrollData['gross_salary'] . '</td>
-                      </tr>
+                    <tr>
+                      <td>Sueldo bruto</td>
+                      <td>' . $payrollData['gross_salary'] . '€</td>
+                    </tr>
+                    <tr>
+                    <td>Sueldo base</td>
+                    <td>' . $payrollData['base_salary'] . '€</td>
+                    </tr>
+                    
+                    <tr>
                       <tr>
                         <td>Complemento destino</td>
-                        <td>' . $payrollData['gross_salary'] . '</td>
+                        <td>' . $payrollData['destination_allowance'] . '€</td>
                       </tr>
                       <tr>
                         <td>Complemento específico</td>
-                        <td>100€</td>
+                        <td>' . $payrollData['specific_allowance'] . '€</td>
                       </tr>
                       <tr>
                         <td>Asistencia a comisiones</td>
-                        <td>50€</td>
+                        <td>' . $payrollData['commission_attendance'] . '€</td>
                       </tr>
                     </tbody>
                   </table>
@@ -226,6 +287,8 @@ class PayrollController extends Controller
                 <div class="col-md-12">
                   <h2>Deducciones</h2>
                   <table class="table">
+                  <br/>
+                  <h4 class="mb-5">Aportaciones del trabajador a las cotizaciones de la seguridad social </h4>
                     <thead>
                       <tr>
                         <th>Concepto</th>
@@ -234,36 +297,42 @@ class PayrollController extends Controller
                     </thead>
                     <tbody>
                       <tr>
-                        <td>Aportaciones del trabajador a las cotizaciones de la seguridad social - Contingencias comunes</td>
-                        <td>-50€</td>
+                        <td>Contingencias comunes</td>
+                        <td>-' . $payrollData['commission_attendance'] . '€</td>
                       </tr>
                       <tr>
-                        <td>Aportaciones del trabajador a las cotizaciones de la seguridad social - Desempleo</td>
-                        <td>-20€</td>
+                        <td>Desempleo</td>
+                        <td>-' . $payrollData['unemployment'] . '€</td>
                       </tr>
                       <tr>
-                        <td>Aportaciones del trabajador a las cotizaciones de la seguridad social - MEI</td>
-                        <td>-10€</td>
+                        <td>MEI</td>
+                        <td>-' . $payrollData['mei'] . '€</td>
                       </tr>
                       <tr>
-                        <td>Aportaciones del trabajador a las cotizaciones de la seguridad social - Formación Profesional</td>
-                        <td>-30€</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Total</strong></td>
-                        <td><strong>-110€</strong></td>
-                      </tr>
-                      <tr>
-                        <td>Otras deducciones - IRPF</td>
-                        <td>-100€</td>
-                      </tr>
-                      <tr>
-                        <td>Otras deducciones - Cuota sindicato Intersindical Canaria</td>
-                        <td>-20€</td>
+                        <td>Formación Profesional</td>
+                        <td>-' . $payrollData['professional_training'] . '€</td>
                       </tr>
                       <tr>
                         <td><strong>Total</strong></td>
-                        <td><strong>-120€</strong></td>
+                        <td><strong>-' . $totalDeducciones . '€</strong></td>
+                      </tr>
+                      <br/>
+                      <h4>Otras deducciones </h4>  
+
+                      <tr>
+                        <td>Cuota sindicato Intersindical Canaria</td>
+                        <td>' . $payrollData['csic'] . '€</td>
+                      </tr>                      <tr>
+                        <td>IRPF</td>
+                        <td>' . $payrollData['income_tax'] . '%</td>
+                      </tr>
+                      <tr>
+                        <td>IRPF calculado</td>
+                        <td>' . $irpfResolved . '€</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>-' . $totalOtrasDeducciones . '€</strong></td>
                       </tr>
                     </tbody>
                   </table>
@@ -276,20 +345,21 @@ class PayrollController extends Controller
 
 
 
-      //creaccion del pdf
-      $dompdf = new Dompdf();
-      $options = $dompdf->getOptions();
-      //$options->setDebugCss(true);
-      $dompdf->setOptions($options);
-      $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
-      $dompdf->setPaper('A4', 'portrait');
-      $dompdf->render();
-      $pdfContent = $dompdf->output();
+        //creaccion del pdf
+        $dompdf = new Dompdf();
+        $options = $dompdf->getOptions();
+        //$options->setDebugCss(true);
+        $dompdf->setOptions($options);
+        $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
 
-      return new Response($pdfContent, 200, [
-        'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'inline; filename="nomina.pdf"'
-      ]);
+        return new Response($pdfContent, 200, [
+          'Content-Type' => 'application/pdf',
+          'Content-Disposition' => 'inline; filename="nomina.pdf"'
+        ]);
+      }
     }
   }
 }

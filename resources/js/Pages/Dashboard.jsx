@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [selectedMonth, setSelectedMonth] = useState(null); // recoger mes
   const [selectedYear, setSelectedYear] = useState(null); // recoger año
 
-  
+
   if (mostrarMensajesLog) {
     // mensajes de prueba
     console.log('nomina -', payroll);
@@ -35,7 +35,7 @@ export default function Dashboard() {
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchPdf();
-    openModal();
+
   };
 
   //consulta la nomina con fech
@@ -46,6 +46,19 @@ export default function Dashboard() {
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     setPdfData(url);
+    console.log(response);
+
+    if (response !== null) {
+      if (payroll !== null) {
+        openModal();
+      } else {
+        // La nómina está vacía
+        console.log('La nómina está vacía.');
+      }
+    } else {
+      // La respuesta del servidor es nula
+      console.log('La respuesta del servidor es nula.');
+    }
   };
 
 

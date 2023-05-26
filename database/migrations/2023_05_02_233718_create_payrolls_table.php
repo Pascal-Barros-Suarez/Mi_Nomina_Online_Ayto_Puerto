@@ -16,8 +16,15 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('gross_salary');
             $table->integer('base_salary');
-            $table->integer('income_tax'); //irpf
-            $table->integer('allowances'); //complementos
+            $table->integer('income_tax'); // IRPF
+            $table->integer('destination_allowance')->nullable(); // Complemento destino
+            $table->integer('specific_allowance')->nullable(); // Complemento específico
+            $table->integer('commission_attendance')->nullable(); // Asistencia a comisiones
+            $table->integer('common_contingencies')->nullable(); // Contingencias comunes
+            $table->integer('unemployment')->nullable(); // Desempleo
+            $table->integer('mei')->nullable(); // MEI
+            $table->integer('professional_training')->nullable(); // Formación Profesional
+            $table->integer('csic')->nullable(); // CSIC
             $table->string('concept');
             $table->string('month'); // campo mes
             $table->integer('year'); // campo año
@@ -39,3 +46,4 @@ return new class extends Migration
         Schema::dropIfExists('payrolls');
     }
 };
+
