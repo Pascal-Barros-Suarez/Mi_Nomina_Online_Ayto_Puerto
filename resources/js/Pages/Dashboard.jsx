@@ -44,21 +44,18 @@ export default function Dashboard() {
     const askUrl = `/generate-pdf?month=${selectedMonth}&year=${selectedYear}`; // Agregar los parámetros al URL
 
     const response = await fetch(askUrl);
+    console.log(response);
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     setPdfData(url);
 
-    if (response !== null) {
-      if (payroll !== null) {
-        openModal();
-      } else {
-        // La nómina está vacía
-        console.log('La nómina está vacía.');
-      }
+    if (response.ok) {
+      openModal();
     } else {
-      // La respuesta del servidor es nula
-      console.log('La respuesta del servidor es nula.');
+      location.reload();
+      console.log('La nómina está vacía.');
     }
+
   };
 
 
@@ -93,7 +90,7 @@ export default function Dashboard() {
             <div className="p-6 text-gray-900 dark:text-gray-100">
               {/* mensaje flash */}
               {mostrarMensajesLog && console.log('dibuja flash -', dibujaFlash(flash))}
-              
+
               {dibujaFlash(flash)}
 
               <h5>Bienvenido al visualizador de nóminas. Por favor, presione el botón para generar su nómina.</h5>

@@ -13,12 +13,11 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
-
-
+use Spatie\Ignition\ErrorPage\Renderer;
 
 class PayrollController extends Controller
 {
-  public function userPayrolls()
+  /*   public function userPayrolls()
   {
     $payrolls = User::where('id', Auth::id())
       ->with('payroll')
@@ -26,7 +25,7 @@ class PayrollController extends Controller
       ->get();
 
     return dd($payrolls);
-  }
+  } */
 
   public function lastPayroll()
   {
@@ -77,14 +76,10 @@ class PayrollController extends Controller
       // Puedes retornar un mensaje de error, lanzar una excepción, etc.
       return response()->json(['error' => 'Usuario o nómina no encontrados'], 404);
     } else {
-
-      //require_once('/app/templates/pdf-template.php'); // Importa el archivo pdf-template.php
-
       //contenido del pdf
       $bootstrapJS = file_get_contents(public_path('css/bootstrap/bootstrap.min.js'));
       $bootstrapCCS = file_get_contents(public_path('css/bootstrap/bootstrap.min.css'));
       $customCSS = file_get_contents(public_path('css/custom.css'));
-      //$customHTML = file_get_contents(public_path('html/template.html'));
 
       //datos del usuario
       $userData = $user->getAttributes();
@@ -95,9 +90,8 @@ class PayrollController extends Controller
       //datos de la nomina
       $payrollData = $user->payroll->first();
       if (empty($payrollData)) {
-        //Session::flash('error', 'No tiene nomina de el mes seleccionado!');
-        // Lanzar una excepción o retornar un mensaje de error
-        throw new \Exception('No tiene nómina para el mes seleccionado');
+        Session::flash('error', 'No se encontró ninguna nómina para el mes seleccionado!');
+        return response()->json(['error' => 'No se encontró ninguna nómina para el mes seleccionado'], 404);
       } else {
         $payrollData = $payrollData->getAttributes();
 
@@ -143,6 +137,7 @@ class PayrollController extends Controller
             $month = "Mes desconocido";
             break;
         }
+
         $totalDeducciones = $payrollData['commission_attendance']
           + $payrollData['unemployment']
           + $payrollData['mei']
@@ -150,8 +145,7 @@ class PayrollController extends Controller
 
         $irpfResolved  =  $payrollData['gross_salary'] * ($payrollData['income_tax'] / 100);
 
-        $totalOtrasDeducciones = $irpfResolved
-          + $payrollData['csic'];
+        $totalOtrasDeducciones = $irpfResolved + $payrollData['csic'];
 
         $html = '<html>
             <head>
@@ -342,8 +336,6 @@ class PayrollController extends Controller
     
             </body>
         </html>';
-
-
 
         //creaccion del pdf
         $dompdf = new Dompdf();
