@@ -40,7 +40,7 @@ class PayrollController extends Controller
       ->first(); //recoger solo la ultima nomina
 
     if (empty($lastPayroll)) {
-      Session::flash('error', 'Generating PDF!');
+      Session::flash('error', 'no tiene nomina!');
       $array = array(
         "month" => "",
         "year" => "",
@@ -95,7 +95,7 @@ class PayrollController extends Controller
       //datos de la nomina
       $payrollData = $user->payroll->first();
       if (empty($payrollData)) {
-        Session::flash('success', 'No tiene nomina de el mes seleccionado!');
+        //Session::flash('error', 'No tiene nomina de el mes seleccionado!');
         // Lanzar una excepción o retornar un mensaje de error
         throw new \Exception('No tiene nómina para el mes seleccionado');
       } else {

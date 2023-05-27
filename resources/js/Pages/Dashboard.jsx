@@ -18,7 +18,7 @@ export default function Dashboard() {
   const mostrarMensajesLog = false; // variable para mostrar console.logs
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' }); //establece si el dispositivo es movil
   //variables
-  const { auth, payroll } = usePage().props; // parametros pasados por inertia pdfContent
+  const { auth, flash, payroll } = usePage().props; // parametros pasados por inertia pdfContent
   const [pdfData, setPdfData] = useState(null); // recogida del pdf
   const [showModal, setShowModal] = useState(false); // modal
   const [selectedMonth, setSelectedMonth] = useState(null); // recoger mes
@@ -29,6 +29,7 @@ export default function Dashboard() {
     // mensajes de prueba
     console.log('nomina -', payroll);
     console.log('auth -', auth);
+    console.log('flash1 -', flash);
   }
 
   // controla si se ha enviado el formulario de generación de nómina
@@ -46,7 +47,6 @@ export default function Dashboard() {
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     setPdfData(url);
-    console.log(response);
 
     if (response !== null) {
       if (payroll !== null) {
@@ -80,6 +80,7 @@ export default function Dashboard() {
     setSelectedYear(year);
   };
 
+  //closeModal();
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -91,8 +92,9 @@ export default function Dashboard() {
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               {/* mensaje flash */}
-              {mostrarMensajesLog && console.log('dibuja flash -', dibujaFlash())}
-              {dibujaFlash()}
+              {mostrarMensajesLog && console.log('dibuja flash -', dibujaFlash(flash))}
+              
+              {dibujaFlash(flash)}
 
               <h5>Bienvenido al visualizador de nóminas. Por favor, presione el botón para generar su nómina.</h5>
               <br />
