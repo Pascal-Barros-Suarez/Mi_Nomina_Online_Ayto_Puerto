@@ -51,6 +51,50 @@ class PayrollController extends Controller
       return Inertia::render('Dashboard',  ['payroll' => $array]);
     } else {
       $array = $lastPayroll->getAttributes();
+
+      switch ($array["month"]) {
+        case 1:
+          $array["month"] = "Enero";
+          break;
+        case 2:
+          $array["month"] = "Febrero";
+          break;
+        case 3:
+          $array["month"] = "Marzo";
+          break;
+        case 4:
+          $array["month"] = "Abril";
+          break;
+        case 5:
+          $array["month"] = "Mayo";
+          break;
+        case 6:
+          $array["month"] = "Junio";
+          break;
+        case 7:
+          $array["month"] = "Julio";
+          break;
+        case 8:
+          $array["month"] = "Agosto";
+          break;
+        case 9:
+          $array["month"] = "Septiembre";
+          break;
+        case 10:
+          $array["month"] = "Octubre";
+          break;
+        case 11:
+          $array["month"] = "Noviembre";
+          break;
+        case 12:
+          $array["month"] = "Diciembre";
+          break;
+        default:
+          // Asigna un valor por defecto si el valor de month no se encuentra en el rango 1-12
+          $array["month"] = "Mes desconocido";
+          break;
+      }
+
       return Inertia::render('Dashboard',  ['payroll' => $array]);
     }
   }
