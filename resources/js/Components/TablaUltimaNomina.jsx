@@ -6,9 +6,9 @@ import 'bootstrap/dist/js/bootstrap.js';
 const UltimaNomina = ({ nomina }) => {
   return (
     <>
-      <h1>Última Nómina</h1>
+      <h1 >Última Nómina</h1>
       <div className="table-responsive">
-        <Table bordered className="rounded">
+        <Table bordered className="rounded border-danger table-2px">
           <thead>
             <tr>
               <th>Mes y Año</th>

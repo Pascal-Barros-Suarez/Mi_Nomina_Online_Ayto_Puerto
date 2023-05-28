@@ -81,7 +81,7 @@ export default function Dashboard() {
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+      header={<h1 className="font-semibold text-center text-gray-200 leading-tight">Generador PDF</h1>}
     >
       <Head title="Dashboard" />
       <div className="py-12">
@@ -93,13 +93,14 @@ export default function Dashboard() {
 
               {dibujaFlash(flash)}
 
-              <h5>Bienvenido al visualizador de nóminas. Por favor, presione el botón para generar su nómina.</h5>
               <br />
               {/* tabla de datos de la última nómina */}
               <UltimaNomina nomina={payroll}></UltimaNomina>
 
               <hr className=' mt-5 mb-5' />
 
+              <h4>Bienvenido al visualizador de nóminas. Por favor, presione el botón para generar su nómina.</h4>
+              <br />
               <div className='row justify-content-around mb-2'>
                 <div className={isMobile ? 'col-6' : 'col-3'}>
                   <Calendar onMonthChange={handleMonthChange} onYearChange={handleYearChange} />
@@ -107,7 +108,7 @@ export default function Dashboard() {
 
                 <div className={isMobile ? 'col-6 d-flex align-items-center justify-content-center' : 'col-3 d-flex align-items-center justify-content-center'}>
                   <Form className='' onSubmit={handleSubmit}>
-                    <Button variant="secondary" type='submit'>Generar Nómina</Button>
+                    <Button className='btn-lg' variant="danger" type='submit'>Generar Nómina</Button>
                   </Form></div>
               </div>
               <br />
