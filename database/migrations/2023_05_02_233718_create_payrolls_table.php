@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('income_tax'); // IRPF
             $table->integer('destination_allowance')->nullable(); // Complemento destino
             $table->integer('specific_allowance')->nullable(); // Complemento específico
+            $table->integer('specific_complement')->nullable(); // Complemento específico
             $table->integer('commission_attendance')->nullable(); // Asistencia a comisiones
             $table->integer('common_contingencies')->nullable(); // Contingencias comunes
             $table->integer('unemployment')->nullable(); // Desempleo
@@ -46,4 +47,3 @@ return new class extends Migration
         Schema::dropIfExists('payrolls');
     }
 };
-

@@ -30,6 +30,7 @@ class PayrollSeeder extends Seeder
                 'income_tax' => $faker->numberBetween(19, 20),
                 'destination_allowance' => $faker->numberBetween(19, 20),
                 'specific_allowance' => $faker->numberBetween(19, 20),
+                'specific_complement' => $faker->numberBetween(19, 20),
                 'commission_attendance' => $faker->numberBetween(19, 20),
                 'common_contingencies' => $faker->numberBetween(19, 20),
                 'unemployment' => $faker->numberBetween(19, 20),

@@ -20,7 +20,6 @@ class Payroll extends Model
         'income_tax',
         'destination_allowance',
         'specific_allowance',
-        'concept',
         'specific_complement',
         'commission_attendance',
         'common_contingencies',
@@ -28,6 +27,9 @@ class Payroll extends Model
         'mei',
         'professional_training',
         'csic',
+        'concept',
+        'month',
+        'year',
     ];
 
     public function user()
