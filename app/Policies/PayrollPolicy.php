@@ -24,6 +24,11 @@ class PayrollPolicy
         return $user->id === $payroll->user_id || $user->isAdmin();
     }
 
+    public function generatePdf(User $user, Payroll $payroll): bool
+    {
+        return $user->id === $payroll->user_id || $user->isAdmin();
+    }
+
     /**
      * Determine whether the user can create models.
      */

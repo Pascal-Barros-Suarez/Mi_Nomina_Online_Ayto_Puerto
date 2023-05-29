@@ -12,6 +12,7 @@ class Payroll extends Model
     use HasFactory;
 
     protected $table = 'payrolls';
+
     protected $fillable = [
         'user_id',
         'gross_salary',

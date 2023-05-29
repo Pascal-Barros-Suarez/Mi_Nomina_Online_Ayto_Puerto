@@ -10,6 +10,7 @@ use Dompdf\Dompdf;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
@@ -17,18 +18,10 @@ use Spatie\Ignition\ErrorPage\Renderer;
 
 class PayrollController extends Controller
 {
-  /*   public function userPayrolls()
-  {
-    $payrolls = User::where('id', Auth::id())
-      ->with('payroll')
-      //->latest()
-      ->get();
-
-    return dd($payrolls);
-  } */
-
   public function lastPayroll()
   {
+    $user = Auth::user();
+
     $lastPayroll = User::where('id', Auth::id())
       ->with(['payroll' => function ($query) { //dentro de nominas ordenar por:
         $query->orderBy('year', 'desc') // Ordenar las nóminas por año de forma descendente
@@ -38,64 +31,72 @@ class PayrollController extends Controller
       ->payroll //accedemos a la variable
       ->first(); //recoger solo la ultima nomina
 
-    if (empty($lastPayroll)) {
-      Session::flash('error', 'no tiene nomina!');
-      $array = array(
-        "month" => "",
-        "year" => "",
-        "base_salary" => "",
-        "gross_salary" => "",
-        "income_tax" => "",
-        "concept" => ""
-      );
-      return Inertia::render('Dashboard',  ['payroll' => $array]);
+    // Verificar la autorización
+    if (Gate::denies('view', [$user, $lastPayroll])) {
+      // The user is not authorized, handle the unauthorized access
+      abort(403, 'No tienes permiso para ver las nóminas.');
     } else {
-      $array = $lastPayroll->getAttributes();
+      // The user is authorized, proceed with viewing the payroll
 
-      switch ($array["month"]) {
-        case 1:
-          $array["month"] = "Enero";
-          break;
-        case 2:
-          $array["month"] = "Febrero";
-          break;
-        case 3:
-          $array["month"] = "Marzo";
-          break;
-        case 4:
-          $array["month"] = "Abril";
-          break;
-        case 5:
-          $array["month"] = "Mayo";
-          break;
-        case 6:
-          $array["month"] = "Junio";
-          break;
-        case 7:
-          $array["month"] = "Julio";
-          break;
-        case 8:
-          $array["month"] = "Agosto";
-          break;
-        case 9:
-          $array["month"] = "Septiembre";
-          break;
-        case 10:
-          $array["month"] = "Octubre";
-          break;
-        case 11:
-          $array["month"] = "Noviembre";
-          break;
-        case 12:
-          $array["month"] = "Diciembre";
-          break;
-        default:
-          // Asigna un valor por defecto si el valor de month no se encuentra en el rango 1-12
-          $array["month"] = "Mes desconocido";
-          break;
+      if (empty($lastPayroll)) {
+        Session::flash('error', 'no tiene nomina!');
+        $array = array(
+          "month" => "",
+          "year" => "",
+          "base_salary" => "",
+          "gross_salary" => "",
+          "income_tax" => "",
+          "concept" => ""
+        );
+        return Inertia::render('Dashboard',  ['payroll' => $array]);
+      } else {
+        $array = $lastPayroll->getAttributes();
+
+        switch ($array["month"]) {
+          case 1:
+            $array["month"] = "Enero";
+            break;
+          case 2:
+            $array["month"] = "Febrero";
+            break;
+          case 3:
+            $array["month"] = "Marzo";
+            break;
+          case 4:
+            $array["month"] = "Abril";
+            break;
+          case 5:
+            $array["month"] = "Mayo";
+            break;
+          case 6:
+            $array["month"] = "Junio";
+            break;
+          case 7:
+            $array["month"] = "Julio";
+            break;
+          case 8:
+            $array["month"] = "Agosto";
+            break;
+          case 9:
+            $array["month"] = "Septiembre";
+            break;
+          case 10:
+            $array["month"] = "Octubre";
+            break;
+          case 11:
+            $array["month"] = "Noviembre";
+            break;
+          case 12:
+            $array["month"] = "Diciembre";
+            break;
+          default:
+            // Asigna un valor por defecto si el valor de month no se encuentra en el rango 1-12
+            $array["month"] = "Mes desconocido";
+            break;
+        }
+
+        return Inertia::render('Dashboard',  ['payroll' => $array]);
       }
-
-      return Inertia::render('Dashboard',  ['payroll' => $array]);
     }
   }
 
@@ -105,7 +106,6 @@ class PayrollController extends Controller
     $month = intval($request->input('month'));
     $year = intval($request->input('year'));
 
-
     // Consulta de datos para el PDF
     $user = User::where('id', Auth::id())
       ->with(['payroll' => function ($query) use ($month, $year) {
@@ -114,84 +114,96 @@ class PayrollController extends Controller
       }])
       ->first();
 
-    // Verificar si se encontró el usuario y la nómina
+    // return Auth::user();
     if (!$user) {
       // Manejar el caso de que no se encuentre el usuario o la nómina
       // Puedes retornar un mensaje de error, lanzar una excepción, etc.
       return response()->json(['error' => 'Usuario o nómina no encontrados'], 404);
     } else {
-      //contenido del pdf
-      $bootstrapJS = file_get_contents(public_path('css/bootstrap/bootstrap.min.js'));
-      $bootstrapCCS = file_get_contents(public_path('css/bootstrap/bootstrap.min.css'));
-      $customCSS = file_get_contents(public_path('css/custom.css'));
+      // Verificar la autorización
+      $userPolici = Auth::user();
+      $payrollPolici = $user->payroll->first();
 
-      //datos del usuario
-      $userData = $user->getAttributes();
-
-      //datos de la empresa
-      $companiData = Config::get('compani.COMPANI_FIELDS');
-
-      //datos de la nomina
-      $payrollData = $user->payroll->first();
-      if (empty($payrollData)) {
-        Session::flash('error', 'No se encontró ninguna nómina para el mes seleccionado!');
-        return response()->json(['error' => 'No se encontró ninguna nómina para el mes seleccionado'], 404);
+      if (Gate::denies('view', [$userPolici, $payrollPolici])) {
+        // The user is not authorized, handle the unauthorized access
+        abort(403, 'No tienes permiso para ver las nóminas.');
       } else {
-        $payrollData = $payrollData->getAttributes();
+        // The user is authorized, proceed with viewing the payroll
+        // Verificar si se encontró el usuario y la nómina
 
-        switch ($payrollData["month"]) {
-          case 1:
-            $month = "Enero";
-            break;
-          case 2:
-            $month = "Febrero";
-            break;
-          case 3:
-            $month = "Marzo";
-            break;
-          case 4:
-            $month = "Abril";
-            break;
-          case 5:
-            $month = "Mayo";
-            break;
-          case 6:
-            $month = "Junio";
-            break;
-          case 7:
-            $month = "Julio";
-            break;
-          case 8:
-            $month = "Agosto";
-            break;
-          case 9:
-            $month = "Septiembre";
-            break;
-          case 10:
-            $month = "Octubre";
-            break;
-          case 11:
-            $month = "Noviembre";
-            break;
-          case 12:
-            $month = "Diciembre";
-            break;
-          default:
-            // Asigna un valor por defecto si el valor de month no se encuentra en el rango 1-12
-            $month = "Mes desconocido";
-            break;
-        }
 
-        $totalDeducciones = $payrollData['commission_attendance']
-          + $payrollData['unemployment']
-          + $payrollData['mei']
-          + $payrollData['professional_training'];
+        //contenido del pdf
+        $bootstrapJS = file_get_contents(public_path('css/bootstrap/bootstrap.min.js'));
+        $bootstrapCCS = file_get_contents(public_path('css/bootstrap/bootstrap.min.css'));
+        $customCSS = file_get_contents(public_path('css/custom.css'));
 
-        $irpfResolved  =  $payrollData['gross_salary'] * ($payrollData['income_tax'] / 100);
+        //datos del usuario
+        $userData = $user->getAttributes();
 
-        $totalOtrasDeducciones = $irpfResolved + $payrollData['csic'];
+        //datos de la empresa
+        $companiData = Config::get('compani.COMPANI_FIELDS');
 
-        $html = '<html>
+        //datos de la nomina
+        $payrollData = $user->payroll->first();
+        if (empty($payrollData)) {
+          Session::flash('error', 'No se encontró ninguna nómina para el mes seleccionado!');
+          return response()->json(['error' => 'No se encontró ninguna nómina para el mes seleccionado'], 404);
+        } else {
+          $payrollData = $payrollData->getAttributes();
+
+          switch ($payrollData["month"]) {
+            case 1:
+              $month = "Enero";
+              break;
+            case 2:
+              $month = "Febrero";
+              break;
+            case 3:
+              $month = "Marzo";
+              break;
+            case 4:
+              $month = "Abril";
+              break;
+            case 5:
+              $month = "Mayo";
+              break;
+            case 6:
+              $month = "Junio";
+              break;
+            case 7:
+              $month = "Julio";
+              break;
+            case 8:
+              $month = "Agosto";
+              break;
+            case 9:
+              $month = "Septiembre";
+              break;
+            case 10:
+              $month = "Octubre";
+              break;
+            case 11:
+              $month = "Noviembre";
+              break;
+            case 12:
+              $month = "Diciembre";
+              break;
+            default:
+              // Asigna un valor por defecto si el valor de month no se encuentra en el rango 1-12
+              $month = "Mes desconocido";
+              break;
+          }
+
+          $totalDeducciones = $payrollData['commission_attendance']
+            + $payrollData['unemployment']
+            + $payrollData['mei']
+            + $payrollData['professional_training'];
+
+          $irpfResolved  =  $payrollData['gross_salary'] * ($payrollData['income_tax'] / 100);
+
+          $totalOtrasDeducciones = $irpfResolved + $payrollData['csic'];
+
+          $html = '<html>
             <head>
             <meta charset="UTF-8">
                 <style>
@@ -381,20 +393,21 @@ class PayrollController extends Controller
             </body>
         </html>';
 
-        //creaccion del pdf
-        $dompdf = new Dompdf();
-        $options = $dompdf->getOptions();
-        //$options->setDebugCss(true);
-        $dompdf->setOptions($options);
-        $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $pdfContent = $dompdf->output();
+          //creaccion del pdf
+          $dompdf = new Dompdf();
+          $options = $dompdf->getOptions();
+          //$options->setDebugCss(true);
+          $dompdf->setOptions($options);
+          $dompdf->loadHtml($html); // Usa la variable $html del archivo pdf-template.php
+          $dompdf->setPaper('A4', 'portrait');
+          $dompdf->render();
+          $pdfContent = $dompdf->output();
 
-        return new Response($pdfContent, 200, [
-          'Content-Type' => 'application/pdf',
-          'Content-Disposition' => 'inline; filename="nomina.pdf"'
-        ]);
+          return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="nomina.pdf"'
+          ]);
+        }
       }
     }
   }
