@@ -1,13 +1,14 @@
 ﻿name;dni;email;password;social_security_number;department;position;hiring_date;group;level;cnae_93;contribution_group;type
-Pascal;79204859N;Pascalbarrossuarez@gmail.com;Admin;353000000000;Informatica;tecnico superior ;12/12/2012;A1;15;84;1;F1
-Juan Pérez;12345678X;juan.perez@gmail.com;password123;353000000000;Ventas;administrador;13/11/2013;B1;34;84;1;F2
-María López;87654321Y;maria.lopez@gmail.com;password456;353000000000;Recursos;administrador;15/10/2014;B2;22;84;1;A1
-David Sánchez;45678901Z;david.sanchez@gmail.com;password789;353000000000;Desarrollo;administrador;16/09/2015;C3;10;84;1;A2
-Ana García;23456789A;ana.garcia@gmail.com;password321;353000000000;Marketing;redes sociales;17/08/2016;A2;27;84;1;C1
-Antonio Romero;67891234B;antonio.romero@hotmail.com;password654;353000000000;Finanzas;contable;19/07/2017;A2;23;84;1;C2
-Sandra Gómez;34567890C;sandra.gomez@yahoo.com;password987;353000000000;Ventas;contable;20/06/2018;B3;34;84;1;F3
-Luis Torres;89012345D;luis.torres@gmail.com;password012;353000000000;Desarrollo;contable;22/05/2019;B4;14;84;1;F4
-Elena Moreno;56789012E;elena.moreno@gmail.com;password345;353000000000;Recursos;tecnico superior ;22/04/2020;C4;23;84;1;A3
-Mario Jiménez;32109876F;mario.jimenez@yahoo.com;password678;353000000000;Ventas;tecnico superior ;24/03/2021;A3;16;84;1;A4
-Ana Martín;65432109G;ana.martin@gmail.com;password901;353000000000;Desarrollo;tecnico superior ;23/02/2022;A3;11;84;1;C3
-Carlos García;23456789H;carlos.garcia@hotmail.com;password234;353000000000;Marketing;tecnico superior ;25/01/2023;B5;19;84;1;C4
+Admin;;Admin@gmailcom;Admin;;;;;;;;;
+Pascal;79204859N;Pascalbarrossuarez@gmail.com;Admin;3,53E+11;Informatica;tecnico superior ;12/12/2012;A1;15;84;1;F1
+Juan Pérez;12345678X;juan.perez@gmail.com;password123;3,53E+11;Ventas;administrador;13/11/2013;B1;34;84;1;F2
+María López;87654321Y;maria.lopez@gmail.com;password456;3,53E+11;Recursos;administrador;15/10/2014;B2;22;84;1;A1
+David Sánchez;45678901Z;david.sanchez@gmail.com;password789;3,53E+11;Desarrollo;administrador;16/09/2015;C3;10;84;1;A2
+Ana García;23456789A;ana.garcia@gmail.com;password321;3,53E+11;Marketing;redes sociales;17/08/2016;A2;27;84;1;C1
+Antonio Romero;67891234B;antonio.romero@hotmail.com;password654;3,53E+11;Finanzas;contable;19/07/2017;A2;23;84;1;C2
+Sandra Gómez;34567890C;sandra.gomez@yahoo.com;password987;3,53E+11;Ventas;contable;20/06/2018;B3;34;84;1;F3
+Luis Torres;89012345D;luis.torres@gmail.com;password012;3,53E+11;Desarrollo;contable;22/05/2019;B4;14;84;1;F4
+Elena Moreno;56789012E;elena.moreno@gmail.com;password345;3,53E+11;Recursos;tecnico superior ;22/04/2020;C4;23;84;1;A3
+Mario Jiménez;32109876F;mario.jimenez@yahoo.com;password678;3,53E+11;Ventas;tecnico superior ;24/03/2021;A3;16;84;1;A4
+Ana Martín;65432109G;ana.martin@gmail.com;password901;3,53E+11;Desarrollo;tecnico superior ;23/02/2022;A3;11;84;1;C3
+Carlos García;23456789H;carlos.garcia@hotmail.com;password234;3,53E+11;Marketing;tecnico superior ;25/01/2023;B5;19;84;1;C4
