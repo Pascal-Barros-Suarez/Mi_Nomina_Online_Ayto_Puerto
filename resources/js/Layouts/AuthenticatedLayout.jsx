@@ -8,7 +8,7 @@ import 'bootstrap/dist/js/bootstrap';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-    
+
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className=" bg-gray-100 border-b border-gray-100">
@@ -96,7 +96,7 @@ export default function Authenticated({ user, header, children }) {
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                        Iinicio
+                            Iinicio
                         </ResponsiveNavLink>
                     </div>
 
