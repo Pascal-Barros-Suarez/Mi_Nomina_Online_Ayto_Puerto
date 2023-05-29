@@ -25,8 +25,8 @@ export default function Dashboard() {
   const [selectedYear, setSelectedYear] = useState(null); // recoger año
 
 
+  // mensajes de prueba
   if (mostrarMensajesLog) {
-    // mensajes de prueba
     console.log('nomina -', payroll);
     console.log('auth -', auth);
     console.log('flash1 -', flash);
@@ -36,7 +36,6 @@ export default function Dashboard() {
   const handleSubmit = (e) => {
     e.preventDefault();
     fetchPdf();
-
   };
 
   //consulta la nomina con fech
@@ -53,9 +52,10 @@ export default function Dashboard() {
       openModal();
     } else {
       location.reload();
-      console.log('La nómina está vacía.');
+      if (mostrarMensajesLog) {
+        console.log('La nómina está vacía.');
+      }
     }
-
   };
 
 
