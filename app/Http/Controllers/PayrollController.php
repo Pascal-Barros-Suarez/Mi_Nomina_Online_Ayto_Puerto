@@ -105,7 +105,10 @@ class PayrollController extends Controller
     //recoger datos
     $month = intval($request->input('month'));
     $year = intval($request->input('year'));
-
+    
+    $month = filter_var($month, FILTER_SANITIZE_NUMBER_INT);
+    $year = filter_var($year, FILTER_SANITIZE_NUMBER_INT);
+    
     // Consulta de datos para el PDF
     $user = User::where('id', Auth::id())
       ->with(['payroll' => function ($query) use ($month, $year) {
